@@ -44,7 +44,6 @@ namespace Shadowsocks
                 SystemEvents.PowerModeChanged += SystemEvents_PowerModeChanged;
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
-                Application.ApplicationExit += (sender, args) => HotKeys.Destroy();
 
                 if (!mutex.WaitOne(0, false))
                 {
@@ -152,6 +151,7 @@ namespace Shadowsocks
 
         private static void Application_ApplicationExit(object sender, EventArgs e)
         {
+            HotKeys.Destroy();
             if (_controller != null)
             {
                 _controller.Stop();
