@@ -239,7 +239,7 @@ namespace Shadowsocks.Encryption
         {
             using (RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider())
             {
-                rng.GetBytes(buf, 0, length);
+                rng.GetBytes(buf);
             }
         }
 
