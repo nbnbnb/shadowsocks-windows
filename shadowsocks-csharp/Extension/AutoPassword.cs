@@ -9,6 +9,11 @@ using System.IO;
 using System.Net;
 using Shadowsocks.Controller;
 using Shadowsocks.Model;
+using System.Drawing;
+using ZXing;
+using ZXing.Common;
+using ZXing.QrCode;
+using Shadowsocks.View;
 
 namespace Shadowsocks.Extension
 {
@@ -75,6 +80,13 @@ namespace Shadowsocks.Extension
         static Dictionary<String, String> GetPassword()
         {
             Dictionary<String, String> res = new Dictionary<string, string>();
+            GetPasswordA(res);
+            GetPasswordB(res);
+            return res;
+        }
+
+        static void GetPasswordA(Dictionary<String, String> res)
+        {
             Regex usa = new Regex(@"<h4>A密码:(?<Password>\d+)</h4>");
             Regex hka = new Regex(@"<h4>B密码:(?<Password>\d+)</h4>");
             Regex jpa = new Regex(@"<h4>C密码:(?<Password>\d+)</h4>");
@@ -122,7 +134,44 @@ namespace Shadowsocks.Extension
                     response.Close();
                 }
             }
-            return res;
+        }
+
+        static void GetPasswordB(Dictionary<String, String> res)
+        {
+            string[] images = { "server01.png", "server02.png", "server03.png" };
+
+            foreach (string image in images)
+            {
+                WebRequest request = HttpWebRequest.Create(String.Format("http://www.shadowsocks8.net/images/{0}?timestamp={1}", image, DateTime.Now.Ticks));
+                WebResponse response = null;
+                try
+                {
+                    response = request.GetResponse();
+                    using (Stream stream = response.GetResponseStream())
+                    {
+                        using (Bitmap fullImage = (Bitmap)Bitmap.FromStream(stream))
+                        {
+                            var source = new BitmapLuminanceSource(fullImage);
+                            var bitmap = new BinaryBitmap(new HybridBinarizer(source));
+                            QRCodeReader reader = new QRCodeReader();
+                            var result = reader.decode(bitmap);
+                            if (result != null)
+                            {
+                                var sv = new Server(result.Text);
+                                res.Add(sv.server, sv.password);
+                                Logging.Info(String.Format("获取 {0} 密码：{1}", sv.server, sv.password));
+                            }
+                        }
+                    }
+                }
+                catch
+                {
+                    if (response != null)
+                    {
+                        response.Close();
+                    }
+                }
+            }
         }
 
         internal static void Register(ShadowsocksController controller)

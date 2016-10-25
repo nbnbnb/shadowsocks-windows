@@ -305,6 +305,9 @@
     <None Include="Data\proxy.pac.txt.gz" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="gui-config.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
     <None Include="Properties\DataSources\Shadowsocks.Model.StatisticsStrategyConfiguration.datasource" />
     <None Include="Resources\ss20.png" />

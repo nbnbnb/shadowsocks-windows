@@ -1,0 +1,100 @@
+{
+  "configs": [
+    {
+      "server": "USA.ISS.TF",
+      "server_port": 1024,
+      "password": "70729996",
+      "method": "aes-256-cfb",
+      "remarks": "",
+      "auth": false,
+      "timeout": 5
+    },
+    {
+      "server": "HKA.ISS.TF",
+      "server_port": 20000,
+      "password": "95022682",
+      "method": "aes-256-cfb",
+      "remarks": "",
+      "auth": false,
+      "timeout": 5
+    },
+    {
+      "server": "JPA.ISS.TF",
+      "server_port": 10008,
+      "password": "02878224",
+      "method": "aes-256-cfb",
+      "remarks": "",
+      "auth": false,
+      "timeout": 5
+    },
+    {
+      "server": "138.68.61.42",
+      "server_port": 23456,
+      "password": "62374054",
+      "method": "rc4-md5",
+      "remarks": "",
+      "auth": false,
+      "timeout": 5
+    },
+    {
+      "server": "153.92.43.64",
+      "server_port": 443,
+      "password": "65570107",
+      "method": "rc4-md5",
+      "remarks": "",
+      "auth": false,
+      "timeout": 5
+    },
+    {
+      "server": "106.186.116.88",
+      "server_port": 443,
+      "password": "92706628",
+      "method": "rc4-md5",
+      "remarks": "",
+      "auth": false,
+      "timeout": 5
+    }
+  ],
+  "strategy": null,
+  "index": 3,
+  "global": false,
+  "enabled": false,
+  "shareOverLan": true,
+  "isDefault": false,
+  "localPort": 9876,
+  "pacUrl": null,
+  "useOnlinePac": false,
+  "availabilityStatistics": true,
+  "autoCheckUpdate": true,
+  "isVerboseLogging": true,
+  "logViewer": {
+    "fontName": "Consolas",
+    "fontSize": 8.0,
+    "bgColor": "Black",
+    "textColor": "White",
+    "topMost": false,
+    "wrapText": false,
+    "toolbarShown": false,
+    "width": 645,
+    "height": 560,
+    "top": 345,
+    "left": 848,
+    "maximized": false
+  },
+  "proxy": {
+    "useProxy": false,
+    "proxyType": 0,
+    "proxyServer": "",
+    "proxyPort": 0,
+    "proxyTimeout": 3
+  },
+  "hotkey": {
+    "SwitchSystemProxy": "",
+    "ChangeToPac": "",
+    "ChangeToGlobal": "",
+    "SwitchAllowLan": "",
+    "ShowLogs": "",
+    "ServerMoveUp": "",
+    "ServerMoveDown": ""
+  }
+}
