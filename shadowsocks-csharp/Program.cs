@@ -32,6 +32,17 @@ namespace Shadowsocks
                 return;
             }
 
+            // Check .NET Framework version
+            if (!Utils.IsSupportedRuntimeVersion())
+            {
+                MessageBox.Show(I18N.GetString("Unsupported .NET Framework, please update to 4.6.2 or later."),
+                "Shadowsocks Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                Process.Start(
+                    "http://dotnetsocial.cloudapp.net/GetDotnet?tfm=.NETFramework,Version=v4.6.2");
+                return;
+            }
+
             Utils.ReleaseMemory(true);
             using (Mutex mutex = new Mutex(false, $"Global\\Shadowsocks_{Application.StartupPath.GetHashCode()}"))
             {
@@ -109,7 +120,7 @@ namespace Shadowsocks
                     Logging.Info("os wake up");
                     if (_controller != null)
                     {
-                        System.Timers.Timer timer = new System.Timers.Timer(5 * 1000);
+                        System.Timers.Timer timer = new System.Timers.Timer(10 * 1000);
                         timer.Elapsed += Timer_Elapsed;
                         timer.AutoReset = false;
                         timer.Enabled = true;
@@ -117,7 +128,11 @@ namespace Shadowsocks
                     }
                     break;
                 case PowerModes.Suspend:
-                    _controller?.Stop();
+                    if (_controller != null)
+                    {
+                        _controller.Stop();
+                        Logging.Info("controller stopped");
+                    }
                     Logging.Info("os suspend");
                     break;
             }
@@ -127,7 +142,11 @@ namespace Shadowsocks
         {
             try
             {
-                _controller?.Start();
+                if (_controller != null)
+                {
+                    _controller.Start();
+                    Logging.Info("controller started");
+                }
             }
             catch (Exception ex)
             {
@@ -151,6 +170,7 @@ namespace Shadowsocks
 
         private static void Application_ApplicationExit(object sender, EventArgs e)
         {
+            SystemEvents.PowerModeChanged -= SystemEvents_PowerModeChanged;
             HotKeys.Destroy();
             if (_controller != null)
             {
