@@ -36,8 +36,6 @@ namespace Shadowsocks.Proxy
 
             public object AsyncState { get; set; }
 
-            public int BytesToRead;
-
             public Exception ex { get; set; }
         }
 
