@@ -62,9 +62,7 @@
     <Prefer32Bit>false</Prefer32Bit>
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
-  <PropertyGroup>
-    <ApplicationManifest>app.manifest</ApplicationManifest>
-  </PropertyGroup>
+  <PropertyGroup />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\Debug\</OutputPath>
@@ -296,10 +294,6 @@
     <EmbeddedResource Include="View\StatisticsStrategyConfigurationForm.resx">
       <DependentUpon>StatisticsStrategyConfigurationForm.cs</DependentUpon>
     </EmbeddedResource>
-    <None Include="app.config" />
-    <None Include="app.manifest">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="Data\abp.js.gz" />
     <None Include="Data\libsscrypto.dll.gz" />
     <None Include="Data\mgwz.dll.gz" />
