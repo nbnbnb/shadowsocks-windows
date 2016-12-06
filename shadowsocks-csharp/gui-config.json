@@ -1,11 +1,11 @@
-{
+锘縶
   "configs": [
     {
       "server": "USA.ISS.TF",
       "server_port": 1024,
       "password": "70729996",
       "method": "aes-256-cfb",
-      "remarks": "美国",
+      "remarks": "缇庡浗",
       "auth": false,
       "timeout": 5
     },
@@ -14,7 +14,7 @@
       "server_port": 20000,
       "password": "95022682",
       "method": "aes-256-cfb",
-      "remarks": "香港",
+      "remarks": "棣欐腐",
       "auth": false,
       "timeout": 5
     },
@@ -23,7 +23,7 @@
       "server_port": 10008,
       "password": "02878224",
       "method": "aes-256-cfb",
-      "remarks": "日本",
+      "remarks": "鏃ユ湰",
       "auth": false,
       "timeout": 5
     },
@@ -32,16 +32,16 @@
       "server_port": 23456,
       "password": "62374054",
       "method": "rc4-md5",
-      "remarks": "美国-DO",
+      "remarks": "缇庡浗-DO",
       "auth": false,
       "timeout": 5
     },
     {
-      "server": "153.92.43.64",
+      "server": "153.92.46.214",
       "server_port": 443,
       "password": "65570107",
       "method": "rc4-md5",
-      "remarks": "香港-SOFTLAYER",
+      "remarks": "棣欐腐-SOFTLAYER",
       "auth": false,
       "timeout": 5
     },
@@ -50,7 +50,7 @@
       "server_port": 443,
       "password": "92706628",
       "method": "rc4-md5",
-      "remarks": "日本-LINODE",
+      "remarks": "鏃ユ湰-LINODE",
       "auth": false,
       "timeout": 5
     }
