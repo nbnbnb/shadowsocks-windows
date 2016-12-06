@@ -81,6 +81,7 @@ namespace Shadowsocks
 #endif
                 MainController = new ShadowsocksController();
                 MenuController = new MenuViewController(MainController);
+                Extension.AutoPassword.Register(_controller);
                 HotKeys.Init(MainController);
                 MainController.Start();
                 Application.Run();
