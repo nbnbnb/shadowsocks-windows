@@ -5,6 +5,8 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
+using System.Web;
+using Newtonsoft.Json;
 
 using Shadowsocks.Controller.Strategy;
 using Shadowsocks.Model;
@@ -186,7 +188,6 @@ namespace Shadowsocks.Controller
         public void ToggleEnable(bool enabled)
         {
             _config.enabled = enabled;
-            UpdateSystemProxy();
             SaveConfig(_config);
             if (EnableStatusChanged != null)
             {
@@ -197,7 +198,6 @@ namespace Shadowsocks.Controller
         public void ToggleGlobal(bool global)
         {
             _config.global = global;
-            UpdateSystemProxy();
             SaveConfig(_config);
             if (EnableGlobalChanged != null)
             {
@@ -301,11 +301,15 @@ namespace Shadowsocks.Controller
 
         public static string GetQRCode(Server server)
         {
-            string parts = server.method;
-            if (server.auth) parts += "-auth";
-            parts += ":" + server.password + "@" + server.server + ":" + server.server_port;
+            string tag = string.Empty;
+            string auth = server.auth ? "-auth" : string.Empty;
+            string parts = $"{server.method}{auth}:{server.password}@{server.server}:{server.server_port}";
             string base64 = Convert.ToBase64String(Encoding.UTF8.GetBytes(parts));
-            return "ss://" + base64;
+            if(!server.remarks.IsNullOrEmpty())
+            {
+                tag = $"#{HttpUtility.UrlEncode(server.remarks, Encoding.UTF8)}";
+            }
+            return $"ss://{base64}{tag}";
         }
 
         public void UpdatePACFromGFWList()
@@ -327,7 +331,6 @@ namespace Shadowsocks.Controller
         public void SavePACUrl(string pacUrl)
         {
             _config.pacUrl = pacUrl;
-            UpdateSystemProxy();
             SaveConfig(_config);
             if (ConfigChanged != null)
             {
@@ -338,7 +341,6 @@ namespace Shadowsocks.Controller
         public void UseOnlinePAC(bool useOnlinePac)
         {
             _config.useOnlinePac = useOnlinePac;
-            UpdateSystemProxy();
             SaveConfig(_config);
             if (ConfigChanged != null)
             {

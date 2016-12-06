@@ -6,17 +6,16 @@ using System.Windows.Forms;
 using Microsoft.Win32;
 
 using Shadowsocks.Controller;
+using Shadowsocks.Controller.Hotkeys;
 using Shadowsocks.Util;
 using Shadowsocks.View;
-using Shadowsocks.Extension;
 
 namespace Shadowsocks
 {
     static class Program
     {
-        private static ShadowsocksController _controller;
-        // XXX: Don't change this name
-        private static MenuViewController _viewController;
+        public static ShadowsocksController MainController { get; private set; }
+        public static MenuViewController MenuController { get; private set; }
 
         /// <summary>
         /// 应用程序的主入口点。
@@ -80,11 +79,10 @@ namespace Shadowsocks
 #else
                 Logging.OpenLogFile();
 #endif
-                _controller = new ShadowsocksController();
-                _viewController = new MenuViewController(_controller);
-                AutoPassword.Register(_controller);
-                HotKeys.Init();
-                _controller.Start();
+                MainController = new ShadowsocksController();
+                MenuController = new MenuViewController(MainController);
+                HotKeys.Init(MainController);
+                MainController.Start();
                 Application.Run();
             }
         }
@@ -122,7 +120,7 @@ namespace Shadowsocks
             {
                 case PowerModes.Resume:
                     Logging.Info("os wake up");
-                    if (_controller != null)
+                    if (MainController != null)
                     {
                         System.Timers.Timer timer = new System.Timers.Timer(10 * 1000);
                         timer.Elapsed += Timer_Elapsed;
@@ -132,9 +130,9 @@ namespace Shadowsocks
                     }
                     break;
                 case PowerModes.Suspend:
-                    if (_controller != null)
+                    if (MainController != null)
                     {
-                        _controller.Stop();
+                        MainController.Stop();
                         Logging.Info("controller stopped");
                     }
                     Logging.Info("os suspend");
@@ -146,9 +144,9 @@ namespace Shadowsocks
         {
             try
             {
-                if (_controller != null)
+                if (MainController != null)
                 {
-                    _controller.Start();
+                    MainController.Start();
                     Logging.Info("controller started");
                 }
             }
@@ -179,10 +177,10 @@ namespace Shadowsocks
             SystemEvents.PowerModeChanged -= SystemEvents_PowerModeChanged;
             Application.ThreadException -= Application_ThreadException;
             HotKeys.Destroy();
-            if (_controller != null)
+            if (MainController != null)
             {
-                _controller.Stop();
-                _controller = null;
+                MainController.Stop();
+                MainController = null;
             }
         }
     }
