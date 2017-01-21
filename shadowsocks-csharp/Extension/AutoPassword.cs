@@ -90,7 +90,7 @@ namespace Shadowsocks.Extension
             Regex usa = new Regex(@"<h4>A密码:(?<Password>\d+)</h4>");
             Regex hka = new Regex(@"<h4>B密码:(?<Password>\d+)</h4>");
             Regex jpa = new Regex(@"<h4>C密码:(?<Password>\d+)</h4>");
-            WebRequest request = HttpWebRequest.Create("http://www.ishadowsocks.org/?timestamp=" + DateTime.Now.Ticks);
+            WebRequest request = HttpWebRequest.Create("http://www.ishadowsocks.mobi/?timestamp=" + DateTime.Now.Ticks);
             WebResponse response = null;
             try
             {
@@ -106,22 +106,22 @@ namespace Shadowsocks.Extension
                             if (match.Success)
                             {
                                 password = match.Groups["Password"].Value;
-                                Logging.Info("获取 USA.ISS.TF 密码：" + password);
-                                res.Add("USA.ISS.TF", password);
+                                Logging.Info("获取 A.SSX.HOST 密码：" + password);
+                                res.Add("A.SSX.HOST", password);
                             }
                             match = hka.Match(tp);
                             if (match.Success)
                             {
                                 password = match.Groups["Password"].Value;
-                                Logging.Info("获取 HKA.ISS.TF 密码：" + password);
-                                res.Add("HKA.ISS.TF", password);
+                                Logging.Info("获取 B.SSX.HOST 密码：" + password);
+                                res.Add("B.SSX.HOST", password);
                             }
                             match = jpa.Match(tp);
                             if (match.Success)
                             {
                                 password = match.Groups["Password"].Value;
-                                Logging.Info("获取 JPA.ISS.TF 密码：" + password);
-                                res.Add("JPA.ISS.TF", password);
+                                Logging.Info("获取 C.SSX.HOST 密码：" + password);
+                                res.Add("C.SSX.HOST", password);
                             }
                         }
                     }

@@ -1,7 +1,7 @@
 ﻿{
   "configs": [
     {
-      "server": "USA.ISS.TF",
+      "server": "A.SSX.HOST",
       "server_port": 1024,
       "password": "70729996",
       "method": "aes-256-cfb",
@@ -10,8 +10,8 @@
       "timeout": 5
     },
     {
-      "server": "HKA.ISS.TF",
-      "server_port": 20000,
+      "server": "B.SSX.HOST",
+      "server_port": 10008,
       "password": "95022682",
       "method": "aes-256-cfb",
       "remarks": "香港",
@@ -19,7 +19,7 @@
       "timeout": 5
     },
     {
-      "server": "JPA.ISS.TF",
+      "server": "C.SSX.HOST",
       "server_port": 10008,
       "password": "02878224",
       "method": "aes-256-cfb",
