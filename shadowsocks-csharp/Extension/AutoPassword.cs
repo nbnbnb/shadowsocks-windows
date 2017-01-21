@@ -127,12 +127,13 @@ namespace Shadowsocks.Extension
                     }
                 }
             }
-            catch
+            catch(Exception ex)
             {
                 if (response != null)
                 {
                     response.Close();
                 }
+                Logging.Info(String.Format("GetPasswordA Error：", ex.StackTrace));
             }
         }
 
@@ -164,12 +165,14 @@ namespace Shadowsocks.Extension
                         }
                     }
                 }
-                catch
+                catch (Exception ex)
                 {
                     if (response != null)
                     {
                         response.Close();
                     }
+
+                    Logging.Info(String.Format("GetPasswordB Error：", ex.StackTrace));
                 }
             }
         }
