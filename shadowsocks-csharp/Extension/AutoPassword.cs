@@ -142,7 +142,7 @@ namespace Shadowsocks.Extension
 
             foreach (string image in images)
             {
-                WebRequest request = HttpWebRequest.Create(String.Format("http://www.shadowsocks8.net/images/{0}?timestamp={1}", image, DateTime.Now.Ticks));
+                WebRequest request = HttpWebRequest.Create(String.Format("http://www.shadowsocks8.com/images/{0}?timestamp={1}", image, DateTime.Now.Ticks));
                 WebResponse response = null;
                 try
                 {

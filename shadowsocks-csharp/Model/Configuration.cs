@@ -22,8 +22,10 @@ namespace Shadowsocks.Model
         public int localPort;
         public string pacUrl;
         public bool useOnlinePac;
+        public bool secureLocalPac = true;
         public bool availabilityStatistics;
         public bool autoCheckUpdate;
+        public bool checkPreRelease;
         public bool isVerboseLogging;
         public LogViewerConfig logViewer;
         public ProxyConfig proxy;

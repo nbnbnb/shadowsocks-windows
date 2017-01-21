@@ -1,9 +1,9 @@
-﻿{
+{
   "configs": [
     {
       "server": "A.SSX.HOST",
       "server_port": 1024,
-      "password": "70729996",
+      "password": "96100978",
       "method": "aes-256-cfb",
       "remarks": "美国",
       "auth": false,
@@ -12,7 +12,7 @@
     {
       "server": "B.SSX.HOST",
       "server_port": 10008,
-      "password": "95022682",
+      "password": "26500603",
       "method": "aes-256-cfb",
       "remarks": "香港",
       "auth": false,
@@ -21,7 +21,7 @@
     {
       "server": "C.SSX.HOST",
       "server_port": 10008,
-      "password": "02878224",
+      "password": "28486792",
       "method": "aes-256-cfb",
       "remarks": "日本",
       "auth": false,
@@ -30,7 +30,7 @@
     {
       "server": "138.68.61.42",
       "server_port": 23456,
-      "password": "62374054",
+      "password": "84836310",
       "method": "rc4-md5",
       "remarks": "美国-DO",
       "auth": false,
@@ -48,15 +48,15 @@
     {
       "server": "106.186.116.88",
       "server_port": 443,
-      "password": "92706628",
+      "password": "39749001",
       "method": "rc4-md5",
       "remarks": "日本-LINODE",
       "auth": false,
       "timeout": 5
     }
   ],
-  "strategy": null,
-  "index": 3,
+  "strategy": "com.shadowsocks.strategy.ha",
+  "index": -1,
   "global": false,
   "enabled": false,
   "shareOverLan": true,
@@ -64,22 +64,18 @@
   "localPort": 9876,
   "pacUrl": null,
   "useOnlinePac": false,
+  "secureLocalPac": true,
   "availabilityStatistics": true,
   "autoCheckUpdate": true,
+  "checkPreRelease": false,
   "isVerboseLogging": true,
   "logViewer": {
-    "fontName": "Consolas",
-    "fontSize": 8.0,
-    "bgColor": "Black",
-    "textColor": "White",
     "topMost": false,
     "wrapText": false,
     "toolbarShown": false,
-    "width": 645,
-    "height": 560,
-    "top": 345,
-    "left": 848,
-    "maximized": false
+    "Font": "Consolas, 8pt",
+    "BackgroundColor": "Black",
+    "TextColor": "White"
   },
   "proxy": {
     "useProxy": false,
@@ -90,8 +86,7 @@
   },
   "hotkey": {
     "SwitchSystemProxy": "",
-    "ChangeToPac": "",
-    "ChangeToGlobal": "",
+    "SwitchSystemProxyMode": "",
     "SwitchAllowLan": "",
     "ShowLogs": "",
     "ServerMoveUp": "",
