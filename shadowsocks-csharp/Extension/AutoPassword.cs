@@ -188,7 +188,8 @@ namespace Shadowsocks.Extension
         #endregion
 
         /// <summary>
-        /// 从 https://go.ishadowx.net/index_cn.html 获取密码
+        /// 从 https://go.ishadowx.net/ 获取密码
+        /// 0/6/12/24 GMT+8
         /// 备用地址 isx.yt isx.tn
         /// 编辑任意邮件发送至下面的邮箱，将会自动回复最新地址
         /// Email: admin@ishadowshocks.com
