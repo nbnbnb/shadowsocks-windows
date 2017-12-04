@@ -196,9 +196,9 @@ namespace Shadowsocks.Extension
         /// <param name="res"></param>
         public static void GetPasswordC(List<Tuple<String, String, Int32>> res)
         {
-            Regex ip_reg = new Regex(@"<h4>IP地址:<span id=""ip(us|jp|sga)[abc]"">(?<IP>.+?)</span>");
-            Regex password_reg = new Regex(@"<h4>密码:<span id=""pw(us|jp|sga)[abc]"">(?<Password>\d+)");
-            Regex port_res = new Regex(@"<h4>端口:<span id=""port(us|jp|sga)[abc]"">(?<Port>\d+)");
+            Regex ip_reg = new Regex(@"<h4>IP地址:<span id=""ip(us|jp|sg)[abc]"">(?<IP>.+?)</span>");
+            Regex password_reg = new Regex(@"<h4>密码:<span id=""pw(us|jp|sg)[abc]"">(?<Password>\d+)");
+            Regex port_res = new Regex(@"<h4>端口:<span id=""port(us|jp|sg)[abc]"">(?<Port>\d+)");
 
             WebRequest request = HttpWebRequest.Create("https://go.ishadowx.net/index_cn.html?timestamp=" + DateTime.Now.Ticks);
             WebResponse response = null;

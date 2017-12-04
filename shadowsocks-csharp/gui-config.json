@@ -59,6 +59,36 @@
       "plugin_opts": "",
       "remarks": "",
       "timeout": 5
+    },
+    {
+      "server": "a.isxc.bid",
+      "server_port": 17897,
+      "password": "09032821",
+      "method": "aes-256-cfb",
+      "plugin": "",
+      "plugin_opts": "",
+      "remarks": "",
+      "timeout": 5
+    },
+    {
+      "server": "b.isxc.bid",
+      "server_port": 19591,
+      "password": "85323371",
+      "method": "aes-256-cfb",
+      "plugin": "",
+      "plugin_opts": "",
+      "remarks": "",
+      "timeout": 5
+    },
+    {
+      "server": "c.isxc.bid",
+      "server_port": 11715,
+      "password": "62348203",
+      "method": "aes-256-cfb",
+      "plugin": "",
+      "plugin_opts": "",
+      "remarks": "",
+      "timeout": 5
     }
   ],
   "strategy": "com.shadowsocks.strategy.ha",
