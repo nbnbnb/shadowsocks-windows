@@ -28,12 +28,12 @@ namespace Shadowsocks.Extension
             // 现在 _timer 已被赋值，可以启动计时器了
             // 现在在 PasswordCheck 中调用 _timer 保证不会抛出 NullReferenceException
             _timer.Change(0, Timeout.Infinite);
-            Logging.Info("开启 ishadowsocks 监听");
+            Logging.Info("----------------------------------------开启 ishadowsocks 监听");
         }
 
         static void DoUpdate(string msg)
         {
-            Logging.Info(msg);
+            Logging.Info("----------------------------------------" + msg);
             UpdateConfig();
         }
 
@@ -68,13 +68,13 @@ namespace Shadowsocks.Extension
             {
                 _controller.Stop();
                 Configuration.Save(config);
-                Logging.Info("密码改变，更新成功");
+                Logging.Info("----------------------------------------密码改变，更新成功");
                 // 将会重新载入配置文件
                 _controller.Start();
             }
             else
             {
-                Logging.Info("密码未变，无需更新");
+                Logging.Info("----------------------------------------密码未变，无需更新");
             }
         }
 
@@ -225,7 +225,7 @@ namespace Shadowsocks.Extension
                                     ip = ips[i].Groups["IP"].Value;
                                     password = passwords[i].Groups["Password"].Value;
                                     port = Int32.Parse(ports[i].Groups["Port"].Value);
-                                    Logging.Info(String.Format("{0}:{1}-{2}", ip, port, password));
+                                    Logging.Info(String.Format("----------------------------------------{0}:{1}-{2}", ip, port, password));
                                     res.Add(Tuple.Create<String, String, Int32>(ip, password, port));
                                 }
                             }
@@ -239,7 +239,7 @@ namespace Shadowsocks.Extension
                 {
                     response.Close();
                 }
-                Logging.Info(String.Format("GetPasswordC Error：", ex.StackTrace));
+                Logging.Info(String.Format("----------------------------------------GetPasswordC Error：{0}", ex.StackTrace));
             }
         }
 
