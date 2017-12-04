@@ -97,7 +97,7 @@
   "enabled": true,
   "shareOverLan": false,
   "isDefault": false,
-  "localPort": 11111,
+  "localPort": 12345,
   "pacUrl": null,
   "useOnlinePac": false,
   "secureLocalPac": true,
