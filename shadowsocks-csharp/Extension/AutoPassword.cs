@@ -16,12 +16,14 @@ using ZXing.QrCode;
 
 namespace Shadowsocks.Extension
 {
-    internal static class AutoPassword
+    public static class AutoPassword
     {
         private static Timer _timer;
         private static ShadowsocksController _controller;
         static AutoPassword()
         {
+            DoUpdate("启动更新密码");
+
             // 创建计时器但不启动
             // 确保 _timer 在线程池调用 PasswordCheck 之前引用该计时器
             _timer = new Timer(PasswordCheck, null, Timeout.Infinite, Timeout.Infinite);
@@ -53,12 +55,14 @@ namespace Shadowsocks.Extension
             bool shouldUpdate = false;
             foreach (var serverInfo in config.configs)
             {
-                if (passwords.ContainsKey(serverInfo.server))
+                var tp = passwords.FirstOrDefault(m => m.Item1.Equals(serverInfo.server, StringComparison.OrdinalIgnoreCase));
+                if (tp != null)
                 {
-                    if (serverInfo.password != passwords[serverInfo.server])
+                    if (!tp.Item2.Equals(serverInfo.password))
                     {
                         shouldUpdate = true;
-                        serverInfo.password = passwords[serverInfo.server];
+                        serverInfo.password = tp.Item2;
+                        serverInfo.server_port = tp.Item3;
                     }
                 }
             }
@@ -76,14 +80,18 @@ namespace Shadowsocks.Extension
             }
         }
 
-        static Dictionary<String, String> GetPassword()
+        static List<Tuple<String, String, Int32>> GetPassword()
         {
-            Dictionary<String, String> res = new Dictionary<string, string>();
-            GetPasswordA(res);
-            GetPasswordB(res);
+            List<Tuple<String, String, Int32>> res = new List<Tuple<string, string, int>>();
+            //GetPasswordA(res);
+            //GetPasswordB(res);
+            GetPasswordC(res);
             return res;
         }
 
+        #region 无效地址
+
+        /*
         static void GetPasswordA(Dictionary<String, String> res)
         {
             Regex usa = new Regex(@"<h4>A密码:(?<Password>\d+)</h4>");
@@ -157,8 +165,7 @@ namespace Shadowsocks.Extension
                             var result = reader.decode(bitmap);
                             if (result != null)
                             {
-                                //var sv = new Server(result.Text);  // ssURL
-                                var sv = new Server();
+                                var sv = Server.ParseLegacyURL(result.Text); // ssURL
                                 res.Add(sv.server, sv.password);
                                 Logging.Info(String.Format("获取 {0} 密码：{1}", sv.server, sv.password));
                             }
@@ -174,6 +181,67 @@ namespace Shadowsocks.Extension
 
                     Logging.Info(String.Format("GetPasswordB Error：", ex.StackTrace));
                 }
+            }
+        }
+        */
+
+
+
+        #endregion
+
+        /// <summary>
+        /// 从 https://go.ishadowx.net/index_cn.html 获取密码
+        /// 备用地址 isx.yt isx.tn
+        /// 编辑任意邮件发送至下面的邮箱，将会自动回复最新地址
+        /// Email: admin@ishadowshocks.com
+        /// </summary>
+        /// <param name="res"></param>
+        public static void GetPasswordC(List<Tuple<String, String, Int32>> res)
+        {
+            Regex ip_reg = new Regex(@"<h4>IP地址:<span id=""ip(us|jp|sga)[abc]"">(?<IP>.+?)</span>");
+            Regex password_reg = new Regex(@"<h4>密码:<span id=""pw(us|jp|sga)[abc]"">(?<Password>\d+)");
+            Regex port_res = new Regex(@"<h4>端口:<span id=""port(us|jp|sga)[abc]"">(?<Port>\d+)");
+
+            WebRequest request = HttpWebRequest.Create("https://go.ishadowx.net/index_cn.html?timestamp=" + DateTime.Now.Ticks);
+            WebResponse response = null;
+            try
+            {
+                using (response = request.GetResponse())
+                {
+                    using (var stream = response.GetResponseStream())
+                    {
+                        using (StreamReader reader = new StreamReader(stream))
+                        {
+                            var tp = reader.ReadToEnd();
+                            var ips = ip_reg.Matches(tp);
+                            var passwords = password_reg.Matches(tp);
+                            var ports = port_res.Matches(tp);
+
+                            if (ips.Count == passwords.Count && ports.Count == ips.Count && ips.Count > 0)
+                            {
+                                for (int i = 0; i < ips.Count; i++)
+                                {
+                                    string ip = "";
+                                    string password = "";
+                                    int port = 0;
+                                    ip = ips[i].Groups["IP"].Value;
+                                    password = passwords[i].Groups["Password"].Value;
+                                    port = Int32.Parse(ports[i].Groups["Port"].Value);
+                                    Logging.Info(String.Format("{0}:{1}-{2}", ip, port, password));
+                                    res.Add(Tuple.Create<String, String, Int32>(ip, password, port));
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                if (response != null)
+                {
+                    response.Close();
+                }
+                Logging.Info(String.Format("GetPasswordC Error：", ex.StackTrace));
             }
         }
 

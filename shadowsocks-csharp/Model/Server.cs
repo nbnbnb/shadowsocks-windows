@@ -77,7 +77,7 @@ namespace Shadowsocks.Model
             timeout = DefaultServerTimeoutSec;
         }
 
-        private static Server ParseLegacyURL(string ssURL)
+        public static Server ParseLegacyURL(string ssURL)
         {
             var match = UrlFinder.Match(ssURL);
             if (!match.Success)

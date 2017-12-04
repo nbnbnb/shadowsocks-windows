@@ -1,41 +1,60 @@
 {
   "configs": [
     {
-      "server": "107.191.105.38",
-      "server_port": 30000,
-      "password": "password30000",
-      "method": "rc4-md5",
-      "remarks": "30000",
-      "auth": false,
+      "server": "a.isxb.bid",
+      "server_port": 10982,
+      "password": "000000",
+      "method": "aes-256-cfb",
+      "remarks": "",
+      "auth": "AutoPass",
       "timeout": 5
     },
     {
-      "server": "107.191.105.38",
-      "server_port": 40000,
-      "password": "password40000",
-      "method": "rc4-md5",
-      "remarks": "40000",
-      "auth": false,
+      "server": "b.isxb.bid",
+      "server_port": 10982,
+      "password": "000000",
+      "method": "aes-256-cfb",
+      "remarks": "",
+      "auth": "AutoPass",
       "timeout": 5
     },
     {
-      "server": "107.191.105.38",
-      "server_port": 50000,
-      "password": "password50000",
-      "method": "rc4-md5",
-      "remarks": "50000",
-      "auth": false,
+      "server": "c.isxb.bid",
+      "server_port": 10982,
+      "password": "000000",
+      "method": "aes-256-cfb",
+      "remarks": "",
+      "auth": "AutoPass",
       "timeout": 5
     },
     {
-      "server": "107.191.105.38",
-      "server_port": 60000,
-      "password": "password60000",
-      "method": "rc4-md5",
-      "remarks": "60000",
-      "auth": false,
+      "server": "a.isxa.bid",
+      "server_port": 10982,
+      "password": "000000",
+      "method": "aes-256-cfb",
+      "remarks": "",
+      "auth": "AutoPass",
+      "timeout": 5
+    },
+    {
+      "server": "b.isxa.bid",
+      "server_port": 10982,
+      "password": "000000",
+      "method": "aes-256-cfb",
+      "remarks": "",
+      "auth": "AutoPass",
+      "timeout": 5
+    },
+    {
+      "server": "c.isxa.bid",
+      "server_port": 10982,
+      "password": "000000",
+      "method": "aes-256-cfb",
+      "remarks": "",
+      "auth": "AutoPass",
       "timeout": 5
     }
+
   ],
   "strategy": null,
   "index": 2,
