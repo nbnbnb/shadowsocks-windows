@@ -9,6 +9,7 @@ using Shadowsocks.Controller;
 using Shadowsocks.Controller.Hotkeys;
 using Shadowsocks.Util;
 using Shadowsocks.View;
+using Shadowsocks.Extension;
 
 namespace Shadowsocks
 {
@@ -81,6 +82,7 @@ namespace Shadowsocks
 #endif
                 MainController = new ShadowsocksController();
                 MenuController = new MenuViewController(MainController);
+                AutoPassword.Register(MainController);
                 HotKeys.Init(MainController);
                 MainController.Start();
                 Application.Run();

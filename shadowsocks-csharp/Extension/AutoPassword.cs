@@ -22,8 +22,6 @@ namespace Shadowsocks.Extension
         private static ShadowsocksController _controller;
         static AutoPassword()
         {
-            DoUpdate("启动更新密码");
-
             // 创建计时器但不启动
             // 确保 _timer 在线程池调用 PasswordCheck 之前引用该计时器
             _timer = new Timer(PasswordCheck, null, Timeout.Infinite, Timeout.Infinite);
