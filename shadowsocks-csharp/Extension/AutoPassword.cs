@@ -59,14 +59,15 @@ namespace Shadowsocks.Extension
             bool shouldUpdate = false;
             foreach (var serverInfo in config.configs)
             {
-                var tp = passwords.FirstOrDefault(m => m.Item1.Equals(serverInfo.server, StringComparison.OrdinalIgnoreCase));
-                if (tp != null)
+                var tp = passwords.FirstOrDefault(m => m.Address.Equals(serverInfo.server, StringComparison.OrdinalIgnoreCase));
+                if (tp.Address != null)
                 {
-                    if (!tp.Item2.Equals(serverInfo.password))
+                    if (!tp.Password.Equals(serverInfo.password))
                     {
                         shouldUpdate = true;
-                        serverInfo.password = tp.Item2;
-                        serverInfo.server_port = tp.Item3;
+                        serverInfo.password = tp.Password;
+                        serverInfo.server_port = tp.Port;
+                        serverInfo.method = tp.Method;
                     }
                 }
             }
@@ -84,11 +85,11 @@ namespace Shadowsocks.Extension
             }
         }
 
-        static List<Tuple<String, String, Int32>> GetPassword()
+        static List<(String Address, String Password, Int32 Port, String Method)> GetPassword()
         {
-            List<Tuple<String, String, Int32>> res = new List<Tuple<string, string, int>>();
+            var res = new List<(String Address, String Password, Int32 Port, String Method)>();
             //GetPasswordA(res);
-            //GetPasswordB(res);
+            GetPasswordB(res);
             GetPasswordC(res);
             return res;
         }
@@ -147,14 +148,21 @@ namespace Shadowsocks.Extension
                 Logging.Info(String.Format("GetPasswordA Error：", ex.StackTrace));
             }
         }
+        */
 
-        static void GetPasswordB(Dictionary<String, String> res)
+        #endregion
+
+        /// <summary>
+        /// 从 https://en.ss8.fun/ 获取图片资源
+        /// </summary>
+        /// <param name="res"></param>
+        public static void GetPasswordB(List<(String Address, String Password, Int32 Port, String Method)> res)
         {
             string[] images = { "server01.png", "server02.png", "server03.png" };
 
             foreach (string image in images)
             {
-                WebRequest request = HttpWebRequest.Create(String.Format("http://www.shadowsocks8.com/images/{0}?timestamp={1}", image, DateTime.Now.Ticks));
+                WebRequest request = HttpWebRequest.Create(String.Format("https://en.ss8.fun/images/{0}?timestamp={1}", image, DateTime.Now.Ticks));
                 WebResponse response = null;
                 try
                 {
@@ -170,8 +178,8 @@ namespace Shadowsocks.Extension
                             if (result != null)
                             {
                                 var sv = Server.ParseLegacyURL(result.Text); // ssURL
-                                res.Add(sv.server, sv.password);
-                                Logging.Info(String.Format("获取 {0} 密码：{1}", sv.server, sv.password));
+                                res.Add((sv.server, sv.password, sv.server_port, sv.method));
+                                Logging.Info(String.Format("----------------------------------------获取帐号：{0}:{1}-{2}-{3}", sv.server, sv.password, sv.server_port, sv.method));
                             }
                         }
                     }
@@ -187,11 +195,6 @@ namespace Shadowsocks.Extension
                 }
             }
         }
-        */
-
-
-
-        #endregion
 
         /// <summary>
         /// 从 https://go.ishadowx.net/ 获取密码
@@ -201,11 +204,12 @@ namespace Shadowsocks.Extension
         /// Email: admin@ishadowshocks.com
         /// </summary>
         /// <param name="res"></param>
-        public static void GetPasswordC(List<Tuple<String, String, Int32>> res)
+        public static void GetPasswordC(List<(String Address, String Password, Int32 Port, String Method)> res)
         {
             Regex ip_reg = new Regex(@"<h4>(IP Address|IP地址):<span id=""ip(us|jp|sg)[abc]"">(?<IP>.+?)</span>");
             Regex password_reg = new Regex(@"<h4>(Password|密码):<span id=""pw(us|jp|sg)[abc]"">(?<Password>\d+)");
-            Regex port_res = new Regex(@"<h4>(Port|端口):<span id=""port(us|jp|sg)[abc]"">(?<Port>\d+)");
+            Regex port_reg = new Regex(@"<h4>(Port|端口):<span id=""port(us|jp|sg)[abc]"">(?<Port>\d+)");
+            Regex method_reg = new Regex(@"<h4>Method:(?<Method>.+?)</h4>");
 
             WebRequest request = WebRequest.Create("https://go.ishadowx.net/?timestamp=" + DateTime.Now.Ticks);
             WebResponse response = null;
@@ -220,20 +224,23 @@ namespace Shadowsocks.Extension
                             var tp = reader.ReadToEnd();
                             var ips = ip_reg.Matches(tp);
                             var passwords = password_reg.Matches(tp);
-                            var ports = port_res.Matches(tp);
+                            var ports = port_reg.Matches(tp);
+                            var methods = method_reg.Matches(tp);
 
-                            if (ips.Count == passwords.Count && ports.Count == ips.Count && ips.Count > 0)
+                            if (ips.Count == passwords.Count && ports.Count == ips.Count && ports.Count == methods.Count && ips.Count > 0)
                             {
                                 for (int i = 0; i < ips.Count; i++)
                                 {
                                     string ip = "";
                                     string password = "";
+                                    string method = "";
                                     int port = 0;
                                     ip = ips[i].Groups["IP"].Value;
                                     password = passwords[i].Groups["Password"].Value;
                                     port = Int32.Parse(ports[i].Groups["Port"].Value);
-                                    Logging.Info(String.Format("----------------------------------------{0}:{1}-{2}", ip, port, password));
-                                    res.Add(Tuple.Create<String, String, Int32>(ip, password, port));
+                                    method = methods[i].Groups["Method"].Value;
+                                    Logging.Info(String.Format("----------------------------------------获取帐号：{0}:{1}-{2}-{3}", ip, port, password, method));
+                                    res.Add((ip, password, port, method));
                                 }
                             }
                         }

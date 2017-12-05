@@ -3,7 +3,7 @@
     {
       "server": "a.isxa.bid",
       "server_port": 14108,
-      "password": "36838736",
+      "password": "",
       "method": "aes-256-cfb",
       "plugin": "",
       "plugin_opts": "",
@@ -89,10 +89,40 @@
       "plugin_opts": "",
       "remarks": "",
       "timeout": 5
+    },
+    {
+      "server": "sga.ss8.site",
+      "server_port": 13171,
+      "password": "64484759",
+      "method": "rc4-md5",
+      "plugin": "",
+      "plugin_opts": "",
+      "remarks": "",
+      "timeout": 5
+    },
+    {
+      "server": "usa.ss8.site",
+      "server_port": 14716,
+      "password": "75338778",
+      "method": "rc4-md5",
+      "plugin": "",
+      "plugin_opts": "",
+      "remarks": "",
+      "timeout": 5
+    },
+    {
+      "server": "rua.ss8.site",
+      "server_port": 17084,
+      "password": "18646862",
+      "method": "rc4-md5",
+      "plugin": "",
+      "plugin_opts": "",
+      "remarks": "",
+      "timeout": 5
     }
   ],
-  "strategy": null,
-  "index": 8,
+  "strategy": "com.shadowsocks.strategy.ha",
+  "index": -1,
   "global": false,
   "enabled": true,
   "shareOverLan": false,
@@ -104,7 +134,7 @@
   "availabilityStatistics": true,
   "autoCheckUpdate": true,
   "checkPreRelease": false,
-  "isVerboseLogging": false,
+  "isVerboseLogging": true,
   "logViewer": {
     "topMost": false,
     "wrapText": false,

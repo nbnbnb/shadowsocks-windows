@@ -81,6 +81,9 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Management" />
     <Reference Include="System.Net" />
+    <Reference Include="System.ValueTuple, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>3rd\System.ValueTuple.4.4.0\lib\net461\System.ValueTuple.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Forms.DataVisualization" />
@@ -352,6 +355,7 @@ foreach (var item in filesToCleanup)
     </PropertyGroup>
     <Error Condition="!Exists('3rd\Fody.2.0.9\build\netstandard1.4\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '3rd\Fody.2.0.9\build\netstandard1.4\Fody.targets'))" />
   </Target>
+  <ProjectExtensions />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

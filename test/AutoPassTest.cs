@@ -13,12 +13,19 @@ namespace test
     public class AutoPassTest
     {
         [TestMethod]
+        public void GetPasswordBTest()
+        {
+            var bb = new List<(String Address, String Password, Int32 Port, String Method)>();
+            AutoPassword.GetPasswordB(bb);
+            Console.WriteLine(bb);
+        }
+
+
+        [TestMethod]
         public void GetPasswordCTest()
         {
-            List<Tuple<String, String, Int32>> bb = new List<Tuple<String, String, Int32>>();
-
+            var bb = new List<(String Address, String Password, Int32 Port, String Method)>();
             AutoPassword.GetPasswordC(bb);
-
             Console.WriteLine(bb);
         }
     }
