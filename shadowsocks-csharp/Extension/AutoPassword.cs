@@ -179,7 +179,7 @@ namespace Shadowsocks.Extension
                             {
                                 var sv = Server.ParseLegacyURL(result.Text); // ssURL
                                 res.Add((sv.server, sv.password, sv.server_port, sv.method));
-                                Logging.Info(String.Format("----------------------------------------获取帐号：{0}:{1}-{2}-{3}", sv.server, sv.password, sv.server_port, sv.method));
+                                Logging.Info(String.Format("----------------------------------------获取帐号：{0}:{1}-{2}-{3}", sv.server, sv.server_port, sv.password, sv.method));
                             }
                         }
                     }
@@ -227,7 +227,7 @@ namespace Shadowsocks.Extension
                             var ports = port_reg.Matches(tp);
                             var methods = method_reg.Matches(tp);
 
-                            if (ips.Count == passwords.Count && ports.Count == ips.Count && ports.Count == methods.Count && ips.Count > 0)
+                            if (ips.Count == passwords.Count && ports.Count == ips.Count && ips.Count > 0)
                             {
                                 for (int i = 0; i < ips.Count; i++)
                                 {
