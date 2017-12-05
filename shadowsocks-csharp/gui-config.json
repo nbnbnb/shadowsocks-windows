@@ -8,7 +8,7 @@
       "plugin": "",
       "plugin_opts": "",
       "remarks": "",
-      "timeout": 5
+      "timeout": 2
     },
     {
       "server": "a.isxb.bid",
@@ -18,7 +18,7 @@
       "plugin": "",
       "plugin_opts": "",
       "remarks": "",
-      "timeout": 5
+      "timeout": 2
     },
     {
       "server": "a.isxc.bid",
@@ -28,7 +28,7 @@
       "plugin": "",
       "plugin_opts": "",
       "remarks": "",
-      "timeout": 5
+      "timeout": 2
     },
     {
       "server": "b.isxa.bid",
@@ -38,7 +38,7 @@
       "plugin": "",
       "plugin_opts": "",
       "remarks": "",
-      "timeout": 5
+      "timeout": 2
     },
     {
       "server": "b.isxb.bid",
@@ -48,7 +48,7 @@
       "plugin": "",
       "plugin_opts": "",
       "remarks": "",
-      "timeout": 5
+      "timeout": 2
     },
     {
       "server": "b.isxc.bid",
@@ -58,7 +58,7 @@
       "plugin": "",
       "plugin_opts": "",
       "remarks": "",
-      "timeout": 5
+      "timeout": 2
     },
     {
       "server": "c.isxa.bid",
@@ -68,7 +68,7 @@
       "plugin": "",
       "plugin_opts": "",
       "remarks": "",
-      "timeout": 5
+      "timeout": 2
     },
     {
       "server": "c.isxb.bid",
@@ -78,7 +78,7 @@
       "plugin": "",
       "plugin_opts": "",
       "remarks": "",
-      "timeout": 5
+      "timeout": 2
     },
     {
       "server": "c.isxc.bid",
@@ -88,7 +88,7 @@
       "plugin": "",
       "plugin_opts": "",
       "remarks": "",
-      "timeout": 5
+      "timeout": 2
     },
     {
       "server": "sga.ss8.site",
@@ -98,7 +98,7 @@
       "plugin": "",
       "plugin_opts": "",
       "remarks": "",
-      "timeout": 5
+      "timeout": 2
     },
     {
       "server": "usa.ss8.site",
@@ -108,7 +108,7 @@
       "plugin": "",
       "plugin_opts": "",
       "remarks": "",
-      "timeout": 5
+      "timeout": 2
     },
     {
       "server": "rua.ss8.site",
@@ -118,7 +118,17 @@
       "plugin": "",
       "plugin_opts": "",
       "remarks": "",
-      "timeout": 5
+      "timeout": 2
+    },
+    {
+      "server": "107.191.105.38",
+      "server_port": 5000,
+      "password": "password50000",
+      "method": "rc4-md5",
+      "plugin": "",
+      "plugin_opts": "",
+      "remarks": "",
+      "timeout": 2
     }
   ],
   "strategy": "com.shadowsocks.strategy.ha",
