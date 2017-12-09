@@ -58,7 +58,7 @@ namespace Shadowsocks.Extension
         {
             var current_config = Configuration.Load();  // 当前的配置信息
             var fork_config = Configuration.Load("fork-gui-config.json");  // 完整的配置信息
-            var addition_config = Configuration.Load("addition-config.json");  // 自定义的不变的配置信息
+            var addition_servers = Configuration.Load("addition-config.json").configs.Where(it => it.server != "").ToList();  // 自定义的不变的配置信息
             var passwords = GetPassword();   // 爬取的配置信息
             bool shouldUpdate = false;
             var spider_servers = new List<Server>();
@@ -84,14 +84,14 @@ namespace Shadowsocks.Extension
             }
 
             // 如果有地址未获取成功，则也应该更新
-            if (!shouldUpdate && passwords.Count != current_config.configs.Count - addition_config.configs.Count)
+            if (!shouldUpdate && passwords.Count != current_config.configs.Count - addition_servers.Count)
             {
                 shouldUpdate = true;
             }
 
             if (shouldUpdate)
             {
-                spider_servers.AddRange(addition_config.configs);  // 加入自定义的配置信息
+                spider_servers.AddRange(addition_servers);  // 加入自定义的配置信息
                 current_config.configs = spider_servers;  // 赋值后更新
                 _controller.Stop();
                 Configuration.Save(current_config);
