@@ -249,6 +249,12 @@
     <None Include="Data\mgwz.dll.gz" />
     <None Include="Data\privoxy.exe.gz" />
     <None Include="Data\proxy.pac.txt.gz" />
+    <None Include="addition-config.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="gui-config.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="statistics-config.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -256,7 +262,7 @@
   <ItemGroup>
     <None Include="Data\sysproxy.exe.gz" />
     <None Include="Data\sysproxy64.exe.gz" />
-    <None Include="gui-config.json">
+    <None Include="fork-gui-config.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />
@@ -277,6 +283,10 @@
     <None Include="FodyWeavers.xml">
       <SubType>Designer</SubType>
     </None>
+    <Content Include="hosts.txt">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Resources\ssIn24.png" />
     <Content Include="Resources\ssOut24.png" />
     <Content Include="shadowsocks.ico" />

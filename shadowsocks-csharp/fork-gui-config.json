@@ -1,0 +1,171 @@
+{
+  "configs": [
+    {
+      "server": "a.isxa.bid",
+      "server_port": 14108,
+      "password": "",
+      "method": "aes-256-cfb",
+      "plugin": "",
+      "plugin_opts": "",
+      "remarks": "",
+      "timeout": 2
+    },
+    {
+      "server": "a.isxb.bid",
+      "server_port": 14567,
+      "password": "44222481",
+      "method": "aes-256-cfb",
+      "plugin": "",
+      "plugin_opts": "",
+      "remarks": "",
+      "timeout": 2
+    },
+    {
+      "server": "a.isxc.bid",
+      "server_port": 17073,
+      "password": "88938800",
+      "method": "aes-256-cfb",
+      "plugin": "",
+      "plugin_opts": "",
+      "remarks": "",
+      "timeout": 2
+    },
+    {
+      "server": "b.isxa.bid",
+      "server_port": 19483,
+      "password": "23999403",
+      "method": "aes-256-cfb",
+      "plugin": "",
+      "plugin_opts": "",
+      "remarks": "",
+      "timeout": 2
+    },
+    {
+      "server": "b.isxb.bid",
+      "server_port": 11055,
+      "password": "28967708",
+      "method": "aes-256-cfb",
+      "plugin": "",
+      "plugin_opts": "",
+      "remarks": "",
+      "timeout": 2
+    },
+    {
+      "server": "b.isxc.bid",
+      "server_port": 11583,
+      "password": "62432229",
+      "method": "aes-256-cfb",
+      "plugin": "",
+      "plugin_opts": "",
+      "remarks": "",
+      "timeout": 2
+    },
+    {
+      "server": "c.isxa.bid",
+      "server_port": 18057,
+      "password": "14707122",
+      "method": "aes-256-cfb",
+      "plugin": "",
+      "plugin_opts": "",
+      "remarks": "",
+      "timeout": 2
+    },
+    {
+      "server": "c.isxb.bid",
+      "server_port": 10350,
+      "password": "67297267",
+      "method": "aes-256-cfb",
+      "plugin": "",
+      "plugin_opts": "",
+      "remarks": "",
+      "timeout": 2
+    },
+    {
+      "server": "c.isxc.bid",
+      "server_port": 13441,
+      "password": "06463017",
+      "method": "aes-256-cfb",
+      "plugin": "",
+      "plugin_opts": "",
+      "remarks": "",
+      "timeout": 2
+    },
+    {
+      "server": "sga.ss8.site",
+      "server_port": 13171,
+      "password": "64484759",
+      "method": "rc4-md5",
+      "plugin": "",
+      "plugin_opts": "",
+      "remarks": "",
+      "timeout": 2
+    },
+    {
+      "server": "usa.ss8.site",
+      "server_port": 14716,
+      "password": "75338778",
+      "method": "rc4-md5",
+      "plugin": "",
+      "plugin_opts": "",
+      "remarks": "",
+      "timeout": 2
+    },
+    {
+      "server": "rua.ss8.site",
+      "server_port": 17084,
+      "password": "18646862",
+      "method": "rc4-md5",
+      "plugin": "",
+      "plugin_opts": "",
+      "remarks": "",
+      "timeout": 2
+    },
+    {
+      "server": "107.191.105.38",
+      "server_port": 5000,
+      "password": "password50000",
+      "method": "rc4-md5",
+      "plugin": "",
+      "plugin_opts": "",
+      "remarks": "",
+      "timeout": 2
+    }
+  ],
+  "strategy": "com.shadowsocks.strategy.ha",
+  "index": -1,
+  "global": false,
+  "enabled": true,
+  "shareOverLan": false,
+  "isDefault": false,
+  "localPort": 12345,
+  "pacUrl": null,
+  "useOnlinePac": false,
+  "secureLocalPac": true,
+  "availabilityStatistics": true,
+  "autoCheckUpdate": true,
+  "checkPreRelease": false,
+  "isVerboseLogging": true,
+  "logViewer": {
+    "topMost": false,
+    "wrapText": false,
+    "toolbarShown": false,
+    "Font": "Consolas, 8pt",
+    "BackgroundColor": "Black",
+    "TextColor": "White"
+  },
+  "proxy": {
+    "useProxy": false,
+    "proxyType": 0,
+    "proxyServer": "",
+    "proxyPort": 0,
+    "proxyTimeout": 3
+  },
+  "hotkey": {
+    "SwitchSystemProxy": "",
+    "SwitchSystemProxyMode": "",
+    "SwitchAllowLan": "",
+    "ShowLogs": "",
+    "ServerMoveUp": "",
+    "ServerMoveDown": ""
+  }
+}

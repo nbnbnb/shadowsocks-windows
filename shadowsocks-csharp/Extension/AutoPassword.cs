@@ -20,8 +20,10 @@ namespace Shadowsocks.Extension
     {
         private static Timer _timer;
         private static ShadowsocksController _controller;
+        private static List<String> hosts;
         static AutoPassword()
         {
+            hosts = File.ReadAllLines("hosts.txt").ToList();
             // 创建计时器但不启动
             // 确保 _timer 在线程池调用 PasswordCheck 之前引用该计时器
             _timer = new Timer(PasswordCheck, null, Timeout.Infinite, Timeout.Infinite);
@@ -54,27 +56,45 @@ namespace Shadowsocks.Extension
 
         static void UpdateConfig()
         {
-            var config = Configuration.Load();
-            var passwords = GetPassword();
+            var current_config = Configuration.Load();  // 当前的配置信息
+            var fork_config = Configuration.Load("fork-gui-config.json");  // 完整的配置信息
+            var addition_config = Configuration.Load("addition-config.json");  // 自定义的不变的配置信息
+            var passwords = GetPassword();   // 爬取的配置信息
             bool shouldUpdate = false;
-            foreach (var serverInfo in config.configs)
+            var spider_servers = new List<Server>();
+            foreach (var serverInfo in fork_config.configs)
             {
-                var tp = passwords.FirstOrDefault(m => m.Address.Equals(serverInfo.server, StringComparison.OrdinalIgnoreCase));
-                if (tp.Address != null)
+                // 通过 Server 进行匹配
+                var (Address, Password, Port, Method) = passwords.FirstOrDefault(m => m.Address.Equals(serverInfo.server, StringComparison.OrdinalIgnoreCase));
+                if (Address != null)
                 {
-                    if (!tp.Password.Equals(serverInfo.password))
+                    if (!Password.Equals(serverInfo.password, StringComparison.Ordinal) ||
+                        Port != serverInfo.server_port ||
+                        !Method.Equals(serverInfo.method, StringComparison.Ordinal))
                     {
                         shouldUpdate = true;
-                        serverInfo.password = tp.Password;
-                        serverInfo.server_port = tp.Port;
-                        serverInfo.method = tp.Method;
+                        serverInfo.password = Password;
+                        serverInfo.server_port = Port;
+                        serverInfo.method = Method;
                     }
+
+                    // 只有匹配成功的才认为是爬取成功的
+                    spider_servers.Add(serverInfo);
                 }
             }
+
+            // 如果有地址未获取成功，则也应该更新
+            if (!shouldUpdate && passwords.Count != current_config.configs.Count - addition_config.configs.Count)
+            {
+                shouldUpdate = true;
+            }
+
             if (shouldUpdate)
             {
+                spider_servers.AddRange(addition_config.configs);  // 加入自定义的配置信息
+                current_config.configs = spider_servers;  // 赋值后更新
                 _controller.Stop();
-                Configuration.Save(config);
+                Configuration.Save(current_config);
                 Logging.Info("----------------------------------------密码改变，更新成功");
                 // 将会重新载入配置文件
                 _controller.Start();
@@ -158,11 +178,17 @@ namespace Shadowsocks.Extension
         /// <param name="res"></param>
         public static void GetPasswordB(List<(String Address, String Password, Int32 Port, String Method)> res)
         {
+            string host = hosts[0];
+            if (String.IsNullOrWhiteSpace(host))
+            {
+                return;
+            }
+
             string[] images = { "server01.png", "server02.png", "server03.png" };
 
             foreach (string image in images)
             {
-                WebRequest request = HttpWebRequest.Create(String.Format("https://en.ss8.fun/images/{0}?timestamp={1}", image, DateTime.Now.Ticks));
+                WebRequest request = WebRequest.Create(String.Format("{0}/images/{1}?timestamp={2}", host, image, DateTime.Now.Ticks));
                 WebResponse response = null;
                 try
                 {
@@ -206,12 +232,18 @@ namespace Shadowsocks.Extension
         /// <param name="res"></param>
         public static void GetPasswordC(List<(String Address, String Password, Int32 Port, String Method)> res)
         {
+            string host = hosts[1];
+            if (String.IsNullOrWhiteSpace(host))
+            {
+                return;
+            }
+
             Regex ip_reg = new Regex(@"<h4>(IP Address|IP地址):<span id=""ip(us|jp|sg)[abc]"">(?<IP>.+?)</span>");
             Regex password_reg = new Regex(@"<h4>(Password|密码):<span id=""pw(us|jp|sg)[abc]"">(?<Password>\d+)");
             Regex port_reg = new Regex(@"<h4>(Port|端口):<span id=""port(us|jp|sg)[abc]"">(?<Port>\d+)");
             Regex method_reg = new Regex(@"<h4>Method:(?<Method>.+?)</h4>");
 
-            WebRequest request = WebRequest.Create("https://go.ishadowx.net/?timestamp=" + DateTime.Now.Ticks);
+            WebRequest request = WebRequest.Create(String.Format("{0}/?timestamp={1}", host, DateTime.Now.Ticks));
             WebResponse response = null;
             try
             {

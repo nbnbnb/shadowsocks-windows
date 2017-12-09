@@ -1,0 +1,10 @@
+﻿https://en.ss8.fun
+https://global.ishadowx.net
+
+
+
+
+第一行配置 https://en.ss8.fun/images/server02.png 的地址
+WebRequest request = WebRequest.Create(String.Format("{0}/images/{1}?timestamp={2}", host, image, DateTime.Now.Ticks));
+第二行配置 https://global.ishadowx.net/ 的地址
+WebRequest request = WebRequest.Create(String.Format("{0}/?timestamp={1}", host, DateTime.Now.Ticks));

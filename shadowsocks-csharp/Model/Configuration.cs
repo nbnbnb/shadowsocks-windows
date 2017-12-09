@@ -51,9 +51,14 @@ namespace Shadowsocks.Model
 
         public static Configuration Load()
         {
+            return Load(CONFIG_FILE);
+        }
+
+        public static Configuration Load(String configFile)
+        {
             try
             {
-                string configContent = File.ReadAllText(CONFIG_FILE);
+                string configContent = File.ReadAllText(configFile);
                 Configuration config = JsonConvert.DeserializeObject<Configuration>(configContent);
                 config.isDefault = false;
 
