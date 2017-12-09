@@ -1,15 +1,6 @@
 {
   "configs": [
-    {
-      "server": "107.191.105.38",
-      "server_port": 5000,
-      "password": "password50000",
-      "method": "rc4-md5",
-      "plugin": "",
-      "plugin_opts": "",
-      "remarks": "",
-      "timeout": 2
-    }
+
   ],
   "strategy": "com.shadowsocks.strategy.ha",
   "index": -1,
