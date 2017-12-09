@@ -97,6 +97,8 @@ namespace Shadowsocks.Extension
                 Configuration.Save(current_config);
                 Logging.Info("----------------------------------------密码改变，更新成功");
                 // 将会重新载入配置文件
+                // 第一次时，需要等待一下
+                Thread.Sleep(1000);
                 _controller.Start();
             }
             else
