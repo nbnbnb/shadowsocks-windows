@@ -32,7 +32,7 @@ namespace Shadowsocks.Extension
             _timer = new Timer(PasswordCheck, null, Timeout.Infinite, Timeout.Infinite);
             // 现在 _timer 已被赋值，可以启动计时器了
             // 现在在 PasswordCheck 中调用 _timer 保证不会抛出 NullReferenceException
-            _timer.Change(DUETIME, Timeout.Infinite);  // Time 计时器的检测频率
+            _timer.Change(DUETIME, Timeout.Infinite);
             Logging.Info("----------------------------------------开启 ishadowsocks 监听");
         }
 
@@ -198,7 +198,7 @@ namespace Shadowsocks.Extension
             foreach (string image in images)
             {
                 String url = $"{host}/images/{image}?timestamp={DateTime.Now.Ticks}";
-                WebRequest request = GetWebRequest(url, isFirst);
+                WebRequest request = GetWebRequest(url, false);
                 WebResponse response = null;
                 int tryCount = 0;
                 GetPassword:
@@ -209,7 +209,7 @@ namespace Shadowsocks.Extension
                     {
                         using (Stream stream = response.GetResponseStream())
                         {
-                            using (Bitmap fullImage = (Bitmap)Bitmap.FromStream(stream))
+                            using (Bitmap fullImage = (Bitmap)Image.FromStream(stream))
                             {
                                 var source = new BitmapLuminanceSource(fullImage);
                                 var bitmap = new BinaryBitmap(new HybridBinarizer(source));
@@ -232,9 +232,9 @@ namespace Shadowsocks.Extension
                         response.Close();
                     }
 
-                    if (tryCount < 3)
+                    if (tryCount < 10)
                     {
-                        Thread.Sleep(1000);
+                        Thread.Sleep(5000);
                         goto GetPassword;
                     }
 
@@ -264,7 +264,7 @@ namespace Shadowsocks.Extension
             Regex port_reg = new Regex(@"<h4>(Port|端口):<span id=""port(us|jp|sg)[abc]"">(?<Port>\d+)");
             Regex method_reg = new Regex(@"<h4>Method:(?<Method>.+?)</h4>");
 
-            WebRequest request = GetWebRequest(url, isFirst);
+            WebRequest request = GetWebRequest(url, false);
             WebResponse response = null;
             int tryCount = 0;
             GetPassword:
@@ -310,9 +310,9 @@ namespace Shadowsocks.Extension
                     response.Close();
                 }
 
-                if (tryCount < 3)
+                if (tryCount < 10)
                 {
-                    Thread.Sleep(1000);
+                    Thread.Sleep(5000);
                     goto GetPassword;
                 }
 
@@ -326,13 +326,13 @@ namespace Shadowsocks.Extension
             DoUpdate("初始密码检测", true);
         }
 
-        private static WebRequest GetWebRequest(String url, bool isFirst)
+        private static WebRequest GetWebRequest(String url, bool useProxy)
         {
             WebRequest request = WebRequest.Create(url);
             request.Timeout = TIMEOUT;
             // 第一次加载的时候不使用代理
             // 因为第一次的帐号信息可能是错误的，使用代理将会导致无法访问
-            if (!isFirst)
+            if (!useProxy)
             {
                 request.Proxy = new WebProxy("127.0.0.1", 1080);
             }
