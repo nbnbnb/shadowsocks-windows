@@ -198,25 +198,29 @@ namespace Shadowsocks.Extension
             foreach (string image in images)
             {
                 String url = $"{host}/images/{image}?timestamp={DateTime.Now.Ticks}";
-                //String url = $"{host}/images/{image}";
                 WebRequest request = GetWebRequest(url, isFirst);
                 WebResponse response = null;
+                int tryCount = 0;
+                GetPassword:
                 try
                 {
-                    response = request.GetResponse();
-                    using (Stream stream = response.GetResponseStream())
+                    tryCount++;
+                    using (response = request.GetResponse())
                     {
-                        using (Bitmap fullImage = (Bitmap)Bitmap.FromStream(stream))
+                        using (Stream stream = response.GetResponseStream())
                         {
-                            var source = new BitmapLuminanceSource(fullImage);
-                            var bitmap = new BinaryBitmap(new HybridBinarizer(source));
-                            QRCodeReader reader = new QRCodeReader();
-                            var result = reader.decode(bitmap);
-                            if (result != null)
+                            using (Bitmap fullImage = (Bitmap)Bitmap.FromStream(stream))
                             {
-                                var sv = Server.ParseLegacyURL(result.Text); // ssURL
-                                res.Add((sv.server, sv.password, sv.server_port, sv.method));
-                                Logging.Info(String.Format("----------------------------------------获取帐号：{0}:{1}-{2}-{3}", sv.server, sv.server_port, sv.password, sv.method));
+                                var source = new BitmapLuminanceSource(fullImage);
+                                var bitmap = new BinaryBitmap(new HybridBinarizer(source));
+                                QRCodeReader reader = new QRCodeReader();
+                                var result = reader.decode(bitmap);
+                                if (result != null)
+                                {
+                                    var sv = Server.ParseLegacyURL(result.Text); // ssURL
+                                    res.Add((sv.server, sv.password, sv.server_port, sv.method));
+                                    Logging.Info(String.Format("----------------------------------------获取帐号：{0}:{1}-{2}-{3}", sv.server, sv.server_port, sv.password, sv.method));
+                                }
                             }
                         }
                     }
@@ -226,6 +230,12 @@ namespace Shadowsocks.Extension
                     if (response != null)
                     {
                         response.Close();
+                    }
+
+                    if (tryCount < 3)
+                    {
+                        Thread.Sleep(1000);
+                        goto GetPassword;
                     }
 
                     Logging.Info($"----------------------------------------GetPasswordB Error URL： {url}\r\nMessage：{ex.Message}");
@@ -256,8 +266,11 @@ namespace Shadowsocks.Extension
 
             WebRequest request = GetWebRequest(url, isFirst);
             WebResponse response = null;
+            int tryCount = 0;
+            GetPassword:
             try
             {
+                tryCount++;
                 using (response = request.GetResponse())
                 {
                     using (var stream = response.GetResponseStream())
@@ -296,6 +309,13 @@ namespace Shadowsocks.Extension
                 {
                     response.Close();
                 }
+
+                if (tryCount < 3)
+                {
+                    Thread.Sleep(1000);
+                    goto GetPassword;
+                }
+
                 Logging.Info($"----------------------------------------GetPasswordC Error URL： {url}\r\nMessage：{ex.Message}");
             }
         }
