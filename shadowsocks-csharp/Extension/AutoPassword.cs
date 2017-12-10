@@ -22,7 +22,7 @@ namespace Shadowsocks.Extension
         private static Timer _timer;
         private static ShadowsocksController _controller;
         private static List<String> hosts;
-        private const int TIMEOUT = 60000;  // 1min
+        private const int TIMEOUT = 30000;  // 30s
         private const int DUETIME = 1000 * 40; // 40s
         static AutoPassword()
         {
@@ -307,7 +307,7 @@ namespace Shadowsocks.Extension
         {
             WebRequest request = WebRequest.Create(url);
             request.Timeout = TIMEOUT;
-            //request.Proxy = new System.Net.WebProxy("127.0.0.1", 1080);
+            request.Proxy = new WebProxy("127.0.0.1", 1080);
             request.CachePolicy = new RequestCachePolicy(RequestCacheLevel.NoCacheNoStore);
             return request;
         }
