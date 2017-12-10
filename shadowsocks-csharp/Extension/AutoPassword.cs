@@ -23,7 +23,7 @@ namespace Shadowsocks.Extension
         private static ShadowsocksController _controller;
         private static List<String> hosts;
         private const int TIMEOUT = 60000;  // 1min
-        private const int DUETIME = 1000 * 60 * 10; // 10min
+        private const int DUETIME = 1000 * 40; // 40s
         static AutoPassword()
         {
             hosts = File.ReadAllLines("hosts.txt").ToList();
@@ -44,18 +44,18 @@ namespace Shadowsocks.Extension
 
         static void PasswordCheck(object obj)
         {
-            //if (DateTime.Now.Minute == 0
-            //    || DateTime.Now.Minute == 57
-            //    || DateTime.Now.Minute == 58
-            //    || DateTime.Now.Minute == 59
-            //    || DateTime.Now.Minute == 1
-            //    || DateTime.Now.Minute == 2
-            //    || DateTime.Now.Minute == 3)
-            //{
-            //    DoUpdate("整点更新密码");
-            //}
-            DoUpdate("自动密码检测");
-            _timer.Change(DUETIME, Timeout.Infinite);  // 10 min 检查一次，当为整点时，去读取服务器端更新的密码
+            if (DateTime.Now.Minute == 0
+                || DateTime.Now.Minute == 57
+                || DateTime.Now.Minute == 58
+                || DateTime.Now.Minute == 59
+                || DateTime.Now.Minute == 1
+                || DateTime.Now.Minute == 2
+                || DateTime.Now.Minute == 3)
+            {
+                DoUpdate("整点更新密码");
+            }
+            //DoUpdate("自动密码检测");
+            _timer.Change(DUETIME, Timeout.Infinite);
         }
 
         static void UpdateConfig()

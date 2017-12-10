@@ -302,6 +302,7 @@ namespace Shadowsocks.View
                     CreateMenuItem("About...", new EventHandler(this.AboutItem_Click)),
                 }),
                 CreateMenuItem("重载...",(o,e)=>{ AutoPassword.DoUpdate("手动重载"); }),
+                CreateMenuItem("Show Logs...", new EventHandler(this.ShowLogItem_Click)),
                 new MenuItem("-"),
                 CreateMenuItem("Quit", new EventHandler(this.Quit_Click))
             });
