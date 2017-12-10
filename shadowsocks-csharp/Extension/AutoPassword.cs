@@ -6,6 +6,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Cache;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -21,6 +22,8 @@ namespace Shadowsocks.Extension
         private static Timer _timer;
         private static ShadowsocksController _controller;
         private static List<String> hosts;
+        private const int TIMEOUT = 60000;  // 1min
+        private const int DUETIME = 1000 * 60 * 10; // 10min
         static AutoPassword()
         {
             hosts = File.ReadAllLines("hosts.txt").ToList();
@@ -29,11 +32,11 @@ namespace Shadowsocks.Extension
             _timer = new Timer(PasswordCheck, null, Timeout.Infinite, Timeout.Infinite);
             // 现在 _timer 已被赋值，可以启动计时器了
             // 现在在 PasswordCheck 中调用 _timer 保证不会抛出 NullReferenceException
-            _timer.Change(0, Timeout.Infinite);
+            _timer.Change(DUETIME, Timeout.Infinite);  // Time 计时器的检测频率
             Logging.Info("----------------------------------------开启 ishadowsocks 监听");
         }
 
-        static void DoUpdate(string msg)
+        internal static void DoUpdate(string msg)
         {
             Logging.Info("----------------------------------------" + msg);
             Task.Run(() => UpdateConfig()); // 异步查询
@@ -41,17 +44,18 @@ namespace Shadowsocks.Extension
 
         static void PasswordCheck(object obj)
         {
-            if (DateTime.Now.Minute == 0
-                || DateTime.Now.Minute == 57
-                || DateTime.Now.Minute == 58
-                || DateTime.Now.Minute == 59
-                || DateTime.Now.Minute == 1
-                || DateTime.Now.Minute == 2
-                || DateTime.Now.Minute == 3)
-            {
-                DoUpdate("整点更新密码");
-            }
-            _timer.Change(1000 * 40, Timeout.Infinite);  // 30s 检查一次，当为整点时，去读取服务器端更新的密码
+            //if (DateTime.Now.Minute == 0
+            //    || DateTime.Now.Minute == 57
+            //    || DateTime.Now.Minute == 58
+            //    || DateTime.Now.Minute == 59
+            //    || DateTime.Now.Minute == 1
+            //    || DateTime.Now.Minute == 2
+            //    || DateTime.Now.Minute == 3)
+            //{
+            //    DoUpdate("整点更新密码");
+            //}
+            DoUpdate("自动密码检测");
+            _timer.Change(DUETIME, Timeout.Infinite);  // 10 min 检查一次，当为整点时，去读取服务器端更新的密码
         }
 
         static void UpdateConfig()
@@ -190,7 +194,9 @@ namespace Shadowsocks.Extension
 
             foreach (string image in images)
             {
-                WebRequest request = WebRequest.Create(String.Format("{0}/images/{1}?timestamp={2}", host, image, DateTime.Now.Ticks));
+                String url = $"{host}/images/{image}?timestamp={DateTime.Now.Ticks}";
+                //String url = $"{host}/images/{image}";
+                WebRequest request = GetWebRequest(url);
                 WebResponse response = null;
                 try
                 {
@@ -219,7 +225,7 @@ namespace Shadowsocks.Extension
                         response.Close();
                     }
 
-                    Logging.Info(String.Format("GetPasswordB Error：", ex.StackTrace));
+                    Logging.Info($"----------------------------------------GetPasswordB Error URL： {url}\r\nMessage：{ex.Message}");
                 }
             }
         }
@@ -239,13 +245,13 @@ namespace Shadowsocks.Extension
             {
                 return;
             }
-
+            String url = String.Format("{0}/?timestamp={1}", host, DateTime.Now.Ticks);
             Regex ip_reg = new Regex(@"<h4>(IP Address|IP地址):<span id=""ip(us|jp|sg)[abc]"">(?<IP>.+?)</span>");
             Regex password_reg = new Regex(@"<h4>(Password|密码):<span id=""pw(us|jp|sg)[abc]"">(?<Password>\d+)");
             Regex port_reg = new Regex(@"<h4>(Port|端口):<span id=""port(us|jp|sg)[abc]"">(?<Port>\d+)");
             Regex method_reg = new Regex(@"<h4>Method:(?<Method>.+?)</h4>");
 
-            WebRequest request = WebRequest.Create(String.Format("{0}/?timestamp={1}", host, DateTime.Now.Ticks));
+            WebRequest request = GetWebRequest(url);
             WebResponse response = null;
             try
             {
@@ -287,7 +293,7 @@ namespace Shadowsocks.Extension
                 {
                     response.Close();
                 }
-                Logging.Info(String.Format("----------------------------------------GetPasswordC Error：{0}", ex.StackTrace));
+                Logging.Info($"----------------------------------------GetPasswordC Error URL： {url}\r\nMessage：{ex.Message}");
             }
         }
 
@@ -295,6 +301,15 @@ namespace Shadowsocks.Extension
         {
             _controller = controller;
             DoUpdate("初始密码检测");
+        }
+
+        private static WebRequest GetWebRequest(String url)
+        {
+            WebRequest request = WebRequest.Create(url);
+            request.Timeout = TIMEOUT;
+            //request.Proxy = new System.Net.WebProxy("127.0.0.1", 1080);
+            request.CachePolicy = new RequestCachePolicy(RequestCacheLevel.NoCacheNoStore);
+            return request;
         }
     }
 }

@@ -14,7 +14,7 @@
     "MaxResponse": 0.0,
     "PackageLoss": 0.0
   },
-  "StatisticsEnabled": true,
+  "StatisticsEnabled": false,
   "ByHourOfDay": true,
   "Ping": true,
   "ChoiceKeptMinutes": 10,

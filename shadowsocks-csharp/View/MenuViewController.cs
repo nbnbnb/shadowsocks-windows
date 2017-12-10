@@ -14,6 +14,7 @@ using Shadowsocks.Model;
 using Shadowsocks.Properties;
 using Shadowsocks.Util;
 using System.Linq;
+using Shadowsocks.Extension;
 
 namespace Shadowsocks.View
 {
@@ -99,7 +100,7 @@ namespace Shadowsocks.View
                 _isFirstRun = true;
                 ShowConfigForm();
             }
-            else if(config.autoCheckUpdate)
+            else if (config.autoCheckUpdate)
             {
                 _isStartupChecking = true;
                 updateChecker.CheckUpdate(config, 3000);
@@ -213,9 +214,9 @@ namespace Shadowsocks.View
                         {
                             Color flyBlue = Color.FromArgb(25, 125, 191);
                             // Multiply with flyBlue
-                            int red   = color.R * flyBlue.R / 255;
-                            int green = color.G * flyBlue.G / 255; 
-                            int blue  = color.B * flyBlue.B / 255;
+                            int red = color.R * flyBlue.R / 255;
+                            int green = color.G * flyBlue.G / 255;
+                            int blue = color.B * flyBlue.B / 255;
                             iconCopy.SetPixel(x, y, Color.FromArgb(color.A, red, green, blue));
                         }
                     }
@@ -300,6 +301,7 @@ namespace Shadowsocks.View
                     }),
                     CreateMenuItem("About...", new EventHandler(this.AboutItem_Click)),
                 }),
+                CreateMenuItem("重载...",(o,e)=>{ AutoPassword.DoUpdate("手动重载"); }),
                 new MenuItem("-"),
                 CreateMenuItem("Quit", new EventHandler(this.Quit_Click))
             });
@@ -324,7 +326,8 @@ namespace Shadowsocks.View
             ShareOverLANItem.Checked = controller.GetConfigurationCopy().shareOverLan;
         }
 
-        void controller_VerboseLoggingStatusChanged(object sender, EventArgs e) {
+        void controller_VerboseLoggingStatusChanged(object sender, EventArgs e)
+        {
             VerboseLoggingToggleItem.Checked = controller.GetConfigurationCopy().isVerboseLogging;
         }
 
@@ -433,7 +436,7 @@ namespace Shadowsocks.View
             }
 
             // user wants a seperator item between strategy and servers menugroup
-            items.Add( i++, new MenuItem("-") );
+            items.Add(i++, new MenuItem("-"));
 
             int strategyCount = i;
             Configuration configuration = controller.GetConfigurationCopy();
@@ -584,7 +587,7 @@ namespace Shadowsocks.View
 
         private void notifyIcon1_Click(object sender, MouseEventArgs e)
         {
-            if ( e.Button == MouseButtons.Middle )
+            if (e.Button == MouseButtons.Middle)
             {
                 ShowLogForm();
             }
@@ -646,9 +649,10 @@ namespace Shadowsocks.View
             controller.SelectStrategy((string)item.Tag);
         }
 
-        private void VerboseLoggingToggleItem_Click( object sender, EventArgs e ) {
-            VerboseLoggingToggleItem.Checked = ! VerboseLoggingToggleItem.Checked;
-            controller.ToggleVerboseLogging( VerboseLoggingToggleItem.Checked );
+        private void VerboseLoggingToggleItem_Click(object sender, EventArgs e)
+        {
+            VerboseLoggingToggleItem.Checked = !VerboseLoggingToggleItem.Checked;
+            controller.ToggleVerboseLogging(VerboseLoggingToggleItem.Checked);
         }
 
         private void StatisticsConfigItem_Click(object sender, EventArgs e)
@@ -894,5 +898,6 @@ namespace Shadowsocks.View
         {
             ShowLogForm();
         }
+
     }
 }

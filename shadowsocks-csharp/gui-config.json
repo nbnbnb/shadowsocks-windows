@@ -144,7 +144,7 @@
   "availabilityStatistics": true,
   "autoCheckUpdate": true,
   "checkPreRelease": false,
-  "isVerboseLogging": true,
+  "isVerboseLogging": false,
   "logViewer": {
     "topMost": false,
     "wrapText": false,
