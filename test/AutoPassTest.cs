@@ -16,7 +16,7 @@ namespace test
         public void GetPasswordBTest()
         {
             var bb = new List<(String Address, String Password, Int32 Port, String Method)>();
-            AutoPassword.GetPasswordB(bb);
+            AutoPassword.GetPasswordB(bb, false);
             Console.WriteLine(bb);
         }
 
@@ -25,7 +25,7 @@ namespace test
         public void GetPasswordCTest()
         {
             var bb = new List<(String Address, String Password, Int32 Port, String Method)>();
-            AutoPassword.GetPasswordC(bb);
+            AutoPassword.GetPasswordC(bb, false);
             Console.WriteLine(bb);
         }
     }

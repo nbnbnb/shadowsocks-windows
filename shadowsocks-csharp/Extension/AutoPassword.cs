@@ -36,10 +36,10 @@ namespace Shadowsocks.Extension
             Logging.Info("----------------------------------------开启 ishadowsocks 监听");
         }
 
-        internal static void DoUpdate(string msg)
+        internal static void DoUpdate(string msg, bool isFirst)
         {
             Logging.Info("----------------------------------------" + msg);
-            Task.Run(() => UpdateConfig()); // 异步查询
+            Task.Run(() => UpdateConfig(isFirst)); // 异步查询
         }
 
         static void PasswordCheck(object obj)
@@ -52,18 +52,18 @@ namespace Shadowsocks.Extension
                 || DateTime.Now.Minute == 2
                 || DateTime.Now.Minute == 3)
             {
-                DoUpdate("整点更新密码");
+                DoUpdate("整点更新密码", false);
             }
             //DoUpdate("自动密码检测");
             _timer.Change(DUETIME, Timeout.Infinite);
         }
 
-        static void UpdateConfig()
+        static void UpdateConfig(bool isFirst)
         {
             var current_config = Configuration.Load();  // 当前的配置信息
             var fork_config = Configuration.Load("fork-gui-config.json");  // 完整的配置信息
             var addition_servers = Configuration.Load("addition-config.json").configs.Where(it => it.server != "").ToList();  // 自定义的不变的配置信息
-            var passwords = GetPassword();   // 爬取的配置信息
+            var passwords = GetPassword(isFirst);   // 爬取的配置信息
             bool shouldUpdate = false;
             var spider_servers = new List<Server>();
             foreach (var serverInfo in fork_config.configs)
@@ -101,8 +101,11 @@ namespace Shadowsocks.Extension
                 Configuration.Save(current_config);
                 Logging.Info("----------------------------------------密码改变，更新成功");
                 // 将会重新载入配置文件
-                // 第一次时，需要等待一下
-                Thread.Sleep(1000);
+                if (isFirst)
+                {
+                    // 第一次时，需要等待一下
+                    Thread.Sleep(1000);
+                }
                 _controller.Start();
             }
             else
@@ -111,12 +114,12 @@ namespace Shadowsocks.Extension
             }
         }
 
-        static List<(String Address, String Password, Int32 Port, String Method)> GetPassword()
+        static List<(String Address, String Password, Int32 Port, String Method)> GetPassword(bool isFirst)
         {
             var res = new List<(String Address, String Password, Int32 Port, String Method)>();
             //GetPasswordA(res);
-            GetPasswordB(res);
-            GetPasswordC(res);
+            GetPasswordB(res, isFirst);
+            GetPasswordC(res, isFirst);
             return res;
         }
 
@@ -182,7 +185,7 @@ namespace Shadowsocks.Extension
         /// 从 https://en.ss8.fun/ 获取图片资源
         /// </summary>
         /// <param name="res"></param>
-        public static void GetPasswordB(List<(String Address, String Password, Int32 Port, String Method)> res)
+        public static void GetPasswordB(List<(String Address, String Password, Int32 Port, String Method)> res, bool isFirst)
         {
             string host = hosts[0];
             if (String.IsNullOrWhiteSpace(host))
@@ -196,7 +199,7 @@ namespace Shadowsocks.Extension
             {
                 String url = $"{host}/images/{image}?timestamp={DateTime.Now.Ticks}";
                 //String url = $"{host}/images/{image}";
-                WebRequest request = GetWebRequest(url);
+                WebRequest request = GetWebRequest(url, isFirst);
                 WebResponse response = null;
                 try
                 {
@@ -238,7 +241,7 @@ namespace Shadowsocks.Extension
         /// Email: admin@ishadowshocks.com
         /// </summary>
         /// <param name="res"></param>
-        public static void GetPasswordC(List<(String Address, String Password, Int32 Port, String Method)> res)
+        public static void GetPasswordC(List<(String Address, String Password, Int32 Port, String Method)> res, bool isFirst)
         {
             string host = hosts[1];
             if (String.IsNullOrWhiteSpace(host))
@@ -251,7 +254,7 @@ namespace Shadowsocks.Extension
             Regex port_reg = new Regex(@"<h4>(Port|端口):<span id=""port(us|jp|sg)[abc]"">(?<Port>\d+)");
             Regex method_reg = new Regex(@"<h4>Method:(?<Method>.+?)</h4>");
 
-            WebRequest request = GetWebRequest(url);
+            WebRequest request = GetWebRequest(url, isFirst);
             WebResponse response = null;
             try
             {
@@ -300,14 +303,19 @@ namespace Shadowsocks.Extension
         internal static void Register(ShadowsocksController controller)
         {
             _controller = controller;
-            DoUpdate("初始密码检测");
+            DoUpdate("初始密码检测", true);
         }
 
-        private static WebRequest GetWebRequest(String url)
+        private static WebRequest GetWebRequest(String url, bool isFirst)
         {
             WebRequest request = WebRequest.Create(url);
             request.Timeout = TIMEOUT;
-            request.Proxy = new WebProxy("127.0.0.1", 1080);
+            // 第一次加载的时候不使用代理
+            // 因为第一次的帐号信息可能是错误的，使用代理将会导致无法访问
+            if (!isFirst)
+            {
+                request.Proxy = new WebProxy("127.0.0.1", 1080);
+            }
             request.CachePolicy = new RequestCachePolicy(RequestCacheLevel.NoCacheNoStore);
             return request;
         }
