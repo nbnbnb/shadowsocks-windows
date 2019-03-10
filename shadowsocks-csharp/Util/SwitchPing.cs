@@ -13,6 +13,7 @@ namespace Shadowsocks.Util
     class SwitchPing
     {
         private static Ping ping = new Ping();
+        private static int checkCount = 5;
         private static long failCount = 0;
         private static long successCount = 0;  // 0 表示为 TCloud，1 表示为 WootHosting
         private static ShadowsocksController shadowsocksController;
@@ -36,7 +37,7 @@ namespace Shadowsocks.Util
             if (e.Reply.Status != IPStatus.Success)
             {
                 failCount++;
-                if (failCount >= 3)
+                if (failCount >= checkCount)
                 {
                     successCount = 0;
                     if (!IsTClouding)
@@ -50,7 +51,7 @@ namespace Shadowsocks.Util
             else
             {
                 successCount++;
-                if (successCount >= 3)
+                if (successCount >= checkCount)
                 {
                     failCount = 0;
                     if (IsTClouding)
