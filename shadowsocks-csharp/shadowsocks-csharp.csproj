@@ -167,6 +167,7 @@
     <Compile Include="Util\Sockets\LineReader.cs" />
     <Compile Include="Util\Sockets\SocketUtil.cs" />
     <Compile Include="Util\Sockets\WrappedSocket.cs" />
+    <Compile Include="Util\SwitchPing.cs" />
     <Compile Include="Util\SystemProxy\ProxyException.cs" />
     <Compile Include="Util\SystemProxy\Sysproxy.cs" />
     <Compile Include="Util\Util.cs" />

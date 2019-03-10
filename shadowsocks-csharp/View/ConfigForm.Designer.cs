@@ -68,6 +68,7 @@
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
             this.DuplicateButton = new System.Windows.Forms.Button();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.AutoPingCheckBox = new System.Windows.Forms.CheckBox();
             this.tableLayoutPanel1.SuspendLayout();
             this.ServerGroupBox.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -449,7 +450,7 @@
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(468, 404);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(468, 415);
             this.tableLayoutPanel2.TabIndex = 7;
             // 
             // tableLayoutPanel6
@@ -462,7 +463,7 @@
             this.tableLayoutPanel6.Controls.Add(this.MoveDownButton, 1, 0);
             this.tableLayoutPanel6.Controls.Add(this.MoveUpButton, 0, 0);
             this.tableLayoutPanel6.Dock = System.Windows.Forms.DockStyle.Top;
-            this.tableLayoutPanel6.Location = new System.Drawing.Point(0, 372);
+            this.tableLayoutPanel6.Location = new System.Drawing.Point(0, 383);
             this.tableLayoutPanel6.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel6.Name = "tableLayoutPanel6";
             this.tableLayoutPanel6.RowCount = 1;
@@ -503,6 +504,7 @@
             this.tableLayoutPanel5.ColumnCount = 2;
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel5.Controls.Add(this.AutoPingCheckBox, 0, 2);
             this.tableLayoutPanel5.Controls.Add(this.ProxyPortTextBox, 1, 0);
             this.tableLayoutPanel5.Controls.Add(this.ProxyPortLabel, 0, 0);
             this.tableLayoutPanel5.Controls.Add(this.PortableModeCheckBox, 0, 1);
@@ -510,10 +512,11 @@
             this.tableLayoutPanel5.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel5.Name = "tableLayoutPanel5";
             this.tableLayoutPanel5.Padding = new System.Windows.Forms.Padding(3);
-            this.tableLayoutPanel5.RowCount = 2;
+            this.tableLayoutPanel5.RowCount = 3;
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel5.Size = new System.Drawing.Size(196, 64);
+            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel5.Size = new System.Drawing.Size(196, 75);
             this.tableLayoutPanel5.TabIndex = 9;
             // 
             // ProxyPortTextBox
@@ -541,7 +544,7 @@
             this.PortableModeCheckBox.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.PortableModeCheckBox.AutoSize = true;
             this.tableLayoutPanel5.SetColumnSpan(this.PortableModeCheckBox, 2);
-            this.PortableModeCheckBox.Location = new System.Drawing.Point(6, 37);
+            this.PortableModeCheckBox.Location = new System.Drawing.Point(6, 33);
             this.PortableModeCheckBox.Name = "PortableModeCheckBox";
             this.PortableModeCheckBox.Size = new System.Drawing.Size(102, 16);
             this.PortableModeCheckBox.TabIndex = 11;
@@ -560,7 +563,7 @@
             this.tableLayoutPanel3.Controls.Add(this.MyCancelButton, 1, 0);
             this.tableLayoutPanel3.Controls.Add(this.OKButton, 0, 0);
             this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Right;
-            this.tableLayoutPanel3.Location = new System.Drawing.Point(309, 375);
+            this.tableLayoutPanel3.Location = new System.Drawing.Point(309, 386);
             this.tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(3, 3, 0, 3);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
             this.tableLayoutPanel3.RowCount = 1;
@@ -599,6 +602,19 @@
             this.DuplicateButton.Text = "Dupli&cate";
             this.DuplicateButton.UseVisualStyleBackColor = true;
             this.DuplicateButton.Click += new System.EventHandler(this.DuplicateButton_Click);
+            // 
+            // AutoPingCheckBox
+            // 
+            this.AutoPingCheckBox.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.AutoPingCheckBox.AutoSize = true;
+            this.tableLayoutPanel5.SetColumnSpan(this.AutoPingCheckBox, 2);
+            this.AutoPingCheckBox.Location = new System.Drawing.Point(6, 55);
+            this.AutoPingCheckBox.Name = "AutoPingCheckBox";
+            this.AutoPingCheckBox.Size = new System.Drawing.Size(78, 14);
+            this.AutoPingCheckBox.TabIndex = 12;
+            this.AutoPingCheckBox.Text = "Auto Ping";
+            this.toolTip1.SetToolTip(this.AutoPingCheckBox, "restart required");
+            this.AutoPingCheckBox.UseVisualStyleBackColor = true;
             // 
             // ConfigForm
             // 
@@ -678,6 +694,7 @@
         private System.Windows.Forms.Label PluginArgumentsLabel;
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.CheckBox PortableModeCheckBox;
+        private System.Windows.Forms.CheckBox AutoPingCheckBox;
     }
 }
 

@@ -87,6 +87,7 @@ namespace Shadowsocks.Controller
             _pluginsByServer = new ConcurrentDictionary<Server, Sip003Plugin>();
             StartReleasingMemory();
             StartTrafficStatistics(61);
+            SwitchPing.Start(this);
         }
 
         public void Start(bool regHotkeys = true)
@@ -179,11 +180,12 @@ namespace Shadowsocks.Controller
             return plugin.LocalEndPoint;
         }
 
-        public void SaveServers(List<Server> servers, int localPort, bool portableMode)
+        public void SaveServers(List<Server> servers, int localPort, bool portableMode, bool autoPing)
         {
             _config.configs = servers;
             _config.localPort = localPort;
             _config.portableMode = portableMode;
+            _config.autoPing = autoPing;
             Configuration.Save(_config);
         }
 

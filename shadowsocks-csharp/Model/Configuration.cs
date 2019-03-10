@@ -33,6 +33,7 @@ namespace Shadowsocks.Model
         public LogViewerConfig logViewer;
         public ProxyConfig proxy;
         public HotkeyConfig hotkey;
+        public bool autoPing = false;
 
         private static string CONFIG_FILE = "gui-config.json";
 

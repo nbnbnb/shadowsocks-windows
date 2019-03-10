@@ -10,6 +10,7 @@ using Shadowsocks.Controller;
 using Shadowsocks.Model;
 using Shadowsocks.Properties;
 using System.Threading.Tasks;
+using Shadowsocks.Util;
 
 namespace Shadowsocks.View
 {
@@ -173,6 +174,7 @@ namespace Shadowsocks.View
             LoadSelectedServerDetails();
             ProxyPortTextBox.Text = _modifiedConfiguration.localPort.ToString();
             PortableModeCheckBox.Checked = _modifiedConfiguration.portableMode;
+            AutoPingCheckBox.Checked = _modifiedConfiguration.autoPing;
         }
 
         private bool SaveValidConfiguration()
@@ -192,8 +194,9 @@ namespace Shadowsocks.View
             _modifiedConfiguration.localPort = localPort;
 
             _modifiedConfiguration.portableMode = PortableModeCheckBox.Checked;
+            _modifiedConfiguration.autoPing = AutoPingCheckBox.Checked;
 
-            controller.SaveServers(_modifiedConfiguration.configs, _modifiedConfiguration.localPort, _modifiedConfiguration.portableMode);
+            controller.SaveServers(_modifiedConfiguration.configs, _modifiedConfiguration.localPort, _modifiedConfiguration.portableMode, _modifiedConfiguration.autoPing);
             // SelectedIndex remains valid
             // We handled this in event handlers, e.g. Add/DeleteButton, SelectedIndexChanged
             // and move operations
