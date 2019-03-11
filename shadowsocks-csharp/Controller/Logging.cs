@@ -40,9 +40,12 @@ namespace Shadowsocks.Controller
 
         private static void WriteToLogFile(object o)
         {
-            try {
+            try
+            {
                 Console.WriteLine(o);
-            } catch(ObjectDisposedException) {
+            }
+            catch (ObjectDisposedException)
+            {
             }
         }
 
@@ -56,7 +59,8 @@ namespace Shadowsocks.Controller
             WriteToLogFile(o);
         }
 
-        public static void Clear() {
+        public static void Clear()
+        {
             _sw.Close();
             _sw.Dispose();
             _fs.Close();
@@ -75,7 +79,8 @@ namespace Shadowsocks.Controller
         public static void Dump(string tag, byte[] arr, int length)
         {
             var sb = new StringBuilder($"{Environment.NewLine}{tag}: ");
-            for (int i = 0; i < length - 1; i++) {
+            for (int i = 0; i < length - 1; i++)
+            {
                 sb.Append($"0x{arr[i]:X2}, ");
             }
             sb.Append($"0x{arr[length - 1]:X2}");
@@ -139,10 +144,10 @@ namespace Shadowsocks.Controller
             }
             else if (e is Win32Exception)
             {
-                var ex = (Win32Exception) e;
+                var ex = (Win32Exception)e;
 
                 // Win32Exception (0x80004005): A 32 bit processes cannot access modules of a 64 bit process.
-                if ((uint) ex.ErrorCode != 0x80004005)
+                if ((uint)ex.ErrorCode != 0x80004005)
                 {
                     Info(e);
                 }

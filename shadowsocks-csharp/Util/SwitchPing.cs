@@ -27,42 +27,61 @@ namespace Shadowsocks.Util
                 await Task.Delay(1000);
                 if (shadowsocksController.GetCurrentConfiguration().autoPing)
                 {
-                    ping.SendAsync("155.94.182.154", 1000, null);  // 设置最大响应时间 1000ms
+                    try
+                    {
+                        ping.SendAsync("155.94.182.154", 1000, null);  // 设置最大响应时间 1000ms
+                    }
+                    catch (PingException ex)
+                    {
+                        Logging.Info($"PingException {ex.Message}");
+
+                    }
+                    catch (Exception ex)
+                    {
+                        Logging.LogUsefulException(ex);
+                    }
                 }
             }
         }
 
         private static void Ping_PingCompleted(object sender, PingCompletedEventArgs e)
         {
-            if (e.Reply.Status != IPStatus.Success)
+            if (e.Reply != null)
             {
-                failCount++;
-                if (failCount >= checkCount)
+                if (e.Reply.Status != IPStatus.Success)
                 {
-                    successCount = 0;
-                    if (!IsTClouding)
+                    failCount++;
+                    if (failCount >= checkCount)
                     {
-                        Logging.Info("Switch to TCloud");
-                        shadowsocksController.SelectServerIndex(0);
-                    }
+                        successCount = 0;
+                        if (!IsTClouding)
+                        {
+                            Logging.Info("Switch to TCloud");
+                            shadowsocksController.SelectServerIndex(0);
+                        }
 
+                    }
                 }
+                else
+                {
+                    successCount++;
+                    if (successCount >= checkCount)
+                    {
+                        failCount = 0;
+                        if (IsTClouding)
+                        {
+                            Logging.Info("Switch to WootHosting");
+                            // 切换到 WootHosting
+                            shadowsocksController.SelectServerIndex(1);
+                        }
+                    }
+                }
+                Logging.Info($"Time: {e.Reply.RoundtripTime} FailCount: {failCount} SuccessCount: {successCount}");
             }
             else
             {
-                successCount++;
-                if (successCount >= checkCount)
-                {
-                    failCount = 0;
-                    if (IsTClouding)
-                    {
-                        Logging.Info("Switch to WootHosting");
-                        // 切换到 WootHosting
-                        shadowsocksController.SelectServerIndex(1);
-                    }
-                }
+                Logging.Info("Relpy is null");
             }
-            Logging.Info($"Time: {e.Reply.RoundtripTime} FailCount: {failCount} SuccessCount: {successCount}");
         }
 
         private static bool IsTClouding
