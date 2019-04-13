@@ -29,7 +29,7 @@ namespace Shadowsocks.Util
                 {
                     try
                     {
-                        ping.SendAsync("155.94.182.154", 1000, null);  // 设置最大响应时间 1000ms
+                        ping.SendAsync("vpn.zhangjin.tk", 1000, null);  // 设置最大响应时间 1000ms
                     }
                     catch (PingException ex)
                     {
