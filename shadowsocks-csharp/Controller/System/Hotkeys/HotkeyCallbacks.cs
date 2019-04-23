@@ -100,8 +100,8 @@ namespace Shadowsocks.Controller.Hotkeys
             {
                 currIndex += 1;
             }
-            Program.MenuController.ShowBalloonTip("当前服务器", _controller.GetCurrentServer().FriendlyName(), ToolTipIcon.Info, 10);
             _controller.SelectServerIndex(currIndex);
+            Program.MenuController.ShowBalloonTip("当前服务器", _controller.GetCurrentServer().FriendlyName(), ToolTipIcon.Info, 10);
         }
 
         private void GetCurrServerInfo(out int currIndex, out int serverCount)
