@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Reflection;
+using System.Windows.Forms;
 
 namespace Shadowsocks.Controller.Hotkeys
 {
     public class HotkeyCallbacks
     {
-
         public static void InitInstance(ShadowsocksController controller)
         {
             if (Instance != null)
@@ -30,7 +30,7 @@ namespace Shadowsocks.Controller.Hotkeys
         }
 
         #region Singleton 
-        
+
         private static HotkeyCallbacks Instance { get; set; }
 
         private readonly ShadowsocksController _controller;
@@ -100,6 +100,7 @@ namespace Shadowsocks.Controller.Hotkeys
             {
                 currIndex += 1;
             }
+            Program.MenuController.ShowBalloonTip("当前服务器", _controller.GetCurrentServer().FriendlyName(), ToolTipIcon.Info, 10);
             _controller.SelectServerIndex(currIndex);
         }
 
