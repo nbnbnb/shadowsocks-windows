@@ -10,3 +10,5 @@ shadowsocks-csharp/3rd/*
 packages/*
 
 shadowsocks-csharp.sln.DotSettings.user
+
+*.orig
