@@ -328,6 +328,7 @@ namespace Shadowsocks.View
                     CreateMenuItem("About...", new EventHandler(this.AboutItem_Click)),
                 }),
                 new MenuItem("-"),
+                new MenuItem("重启 Kcptun",RestartKcptun_Click),
                 CreateMenuItem("Quit", new EventHandler(this.Quit_Click))
             });
         }
@@ -945,6 +946,11 @@ namespace Shadowsocks.View
         public void ShowLogForm_HotKey()
         {
             ShowLogForm();
+        }
+
+        private void RestartKcptun_Click(object sender, EventArgs e)
+        {
+            Process.Start(@"F:\GreenSoft\kcptun\Restart.bat");
         }
     }
 }
