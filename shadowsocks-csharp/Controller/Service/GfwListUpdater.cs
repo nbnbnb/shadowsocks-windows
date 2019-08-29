@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
@@ -91,7 +91,12 @@ namespace Shadowsocks.Controller
         {
             Logging.Info($"Checking GFWList from {GFWLIST_URL}");
             WebClient http = new WebClient();
-            http.Proxy = new WebProxy(IPAddress.Loopback.ToString(), config.localPort);
+            if (config.enabled)
+            {
+                http.Proxy = new WebProxy(
+                    config.isIPv6Enabled ? IPAddress.IPv6Loopback.ToString() : IPAddress.Loopback.ToString(), 
+                    config.localPort);
+            }
             http.DownloadStringCompleted += http_DownloadStringCompleted;
             http.DownloadStringAsync(new Uri(GFWLIST_URL));
         }
